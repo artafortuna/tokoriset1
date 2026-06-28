@@ -1,6 +1,9 @@
+// Anda bisa menyimpan default link logo jika ingin, namun jika sudah upload lokal akan tergantikan.
 const APP_LOGO = "https://raw.githubusercontent.com/artafortuna/website1/main/1779374078922.png";
 
 let storeData = {
+    logoUrl: "",
+    faviconUrl: "",
     whatsapp: "6281234567890",
     marquee: "Selamat datang di Arta Fortuna! Top up murah, aman, dan tepercaya.",
     flashSaleEnd: "",
@@ -20,6 +23,18 @@ let storeData = {
         terms: "Informasi Syarat & Ketentuan belum diatur.",
         refund: "Informasi Kebijakan Pengembalian Dana belum diatur.",
         faq: "Daftar Tanya Jawab belum diatur."
+    },
+    features: {
+        heading: "ARTA FORTUNA : WEBSITE TOPUP GAME & VOUCHER TEPERCAYA DI INDONESIA",
+        desc: "Setiap harinya, ribuan gamers di Indonesia menggunakan ARTA FORTUNA untuk melakukan topup game dengan cepat dan lancar, tanpa perlu daftar atau login.",
+        items: [
+            { icon: "fa-solid fa-check-double", title: "Jujur & Tepercaya", desc: "Setiap hari ada ribuan transaksi topup game atau pembelian voucher yang dilakukan oleh pelanggan kami." },
+            { icon: "fa-solid fa-bolt", title: "Pengiriman Instan", desc: "Hanya butuh beberapa detik saja untuk menyelesaikan transaksi Anda. Semua proses kami berjalan secara otomatis." },
+            { icon: "fa-solid fa-percent", title: "Promosi Menarik", desc: "Dapatkan promo harga terbaik yang bisa Anda nikmati." },
+            { icon: "fa-solid fa-wallet", title: "Pembayaran Lengkap", desc: "Kami menawarkan pilihan pembayaran mulai dari transfer bank, e-Wallet, hingga QRIS." },
+            { icon: "fa-solid fa-thumbs-up", title: "Pasti Lebih Murah", desc: "Top up game favorit Anda dengan harga yang pastinya lebih murah dibandingkan website topup lainnya." },
+            { icon: "fa-brands fa-whatsapp", title: "Layanan CS 24 Jam", desc: "Customer Support kami siap membantu Anda setiap hari dalam 24 jam via WhatsApp." }
+        ]
     }
 };
 
@@ -87,7 +102,6 @@ function renderCustomerCarousel() {
         </div>
     `).join('');
 
-    // PERBAIKAN: Cek apakah sedang di Mode Customer. Jika tidak, tetap sembunyikan.
     const isCustomerMode = document.getElementById('customer-view').style.display !== 'none';
     wrap.style.display = isCustomerMode ? 'block' : 'none';
 }
@@ -95,14 +109,14 @@ function renderCustomerCarousel() {
 function setCustomerOnlyVisibility(isCustomerMode) {
     const promoWrap = document.getElementById('promo-marquee-container');
     const custCarouselWrap = document.getElementById('customer-carousel-wrap');
-    
-    // PERBAIKAN: Deteksi container fitur unggulan
-    const featuresWrap = document.getElementById('customer-features-wrap'); 
+    const featuresWrap = document.getElementById('customer-features-wrap');
 
     if (promoWrap) promoWrap.style.display = isCustomerMode ? 'block' : 'none';
     
-    // Tampilkan fitur unggulan hanya di mode customer
-    if (featuresWrap) featuresWrap.style.display = isCustomerMode ? 'block' : 'none'; 
+    if (featuresWrap) {
+        const hasFeatTitle = storeData.features && storeData.features.heading;
+        featuresWrap.style.display = (isCustomerMode && hasFeatTitle) ? 'block' : 'none';
+    }
     
     if (custCarouselWrap) {
         const items = (storeData.customerCarousel || []).filter(Boolean);
@@ -119,7 +133,7 @@ async function init() {
             storeData.cs = { ...{ wa: "", tele: "", ig: "", x: "", tk: "", fb: "", email: "", address: "" }, ...(saved.cs || {}) };
             storeData.soc = { ...{ wa: "", tele: "", ig: "", x: "", tk: "", fb: "" }, ...(saved.soc || {}) };
             storeData.legal = { ...storeData.legal, ...(saved.legal || {}) };
-
+            storeData.features = { ...storeData.features, ...(saved.features || {}) };
             storeData.customerCarousel = normalizeCustomerCarousel(saved.customerCarousel);
 
             storeData.products = (saved.products || []).map(p => {
@@ -179,13 +193,27 @@ function renderCustomer() {
     const logoImg = document.getElementById('header-logo');
     const headerText = document.getElementById('header-text');
 
+    // 1. RENDER LOGO (Prioritaskan logo lokal, lalu default)
     headerText.style.animation = 'none';
     setTimeout(() => { headerText.style.animation = ''; }, 10);
 
-    if (APP_LOGO && APP_LOGO.trim() !== "") {
-        logoImg.src = APP_LOGO; logoImg.style.display = 'block'; headerText.innerText = 'ARTA FORTUNA';
+    if (storeData.logoUrl && storeData.logoUrl.trim() !== "") {
+        logoImg.src = storeData.logoUrl; 
+        logoImg.style.display = 'block'; 
+        headerText.innerText = 'ARTA FORTUNA';
+    } else if (APP_LOGO && APP_LOGO.trim() !== "") {
+        logoImg.src = APP_LOGO; 
+        logoImg.style.display = 'block'; 
+        headerText.innerText = 'ARTA FORTUNA';
     } else {
-        logoImg.style.display = 'none'; headerText.innerText = '⚡ ARTA FORTUNA';
+        logoImg.style.display = 'none'; 
+        headerText.innerText = '⚡ ARTA FORTUNA';
+    }
+
+    // 2. RENDER FAVICON DARI LOKAL
+    if (storeData.faviconUrl && storeData.faviconUrl.trim() !== "") {
+        const favIcon = document.getElementById('dynamic-favicon');
+        if (favIcon) favIcon.href = storeData.faviconUrl;
     }
 
     document.getElementById('promo-marquee').innerText = storeData.marquee;
@@ -209,7 +237,6 @@ function renderCustomer() {
         trendingSec.style.display = "none";
     }
 
-    // --- PERBAIKAN LOGIKA FLASH SALE ---
     const flashSec = document.getElementById('flash-sale-section');
     const flashGrid = document.getElementById('flash-product-grid');
     const flashProducts = storeData.products.filter(p => p.isActive !== false && p.isFlashSale);
@@ -218,9 +245,7 @@ function renderCustomer() {
     if (storeData.flashSaleEnd) {
         const end = new Date(storeData.flashSaleEnd).getTime();
         const now = new Date().getTime();
-        if (end - now > 0) { // Pastikan waktu belum lewat
-            isFlashSaleActive = true;
-        }
+        if (end - now > 0) { isFlashSaleActive = true; }
     }
 
     if (flashProducts.length > 0 && isFlashSaleActive) {
@@ -232,7 +257,6 @@ function renderCustomer() {
         flashSec.style.display = "none";
         clearInterval(countdownInterval);
     }
-    // ------------------------------------
 
     const activeProducts = storeData.products.filter(p => p.isActive !== false);
     const categories = [...new Set(activeProducts.map(p => p.category))];
@@ -272,11 +296,7 @@ function renderCustomer() {
     if (searchQ) {
         filtered = filtered.filter(p => {
             const hay = [
-                p.category,
-                p.operator,
-                p.nominal,
-                p.description || '',
-                String(p.price ?? '')
+                p.category, p.operator, p.nominal, p.description || '', String(p.price ?? '')
             ].join(' ').toLowerCase();
             return hay.includes(searchQ);
         });
@@ -290,8 +310,29 @@ function renderCustomer() {
 
     filtered.forEach(p => { grid.innerHTML += generateProductHTML(p); });
 
+    // Render Fitur Unggulan
+    const featContainer = document.getElementById('features-container');
+    if (featContainer && storeData.features && storeData.features.heading) {
+        let itemsHtml = storeData.features.items.map(item => `
+            <div class="feature-card">
+                <i class="${item.icon} feature-icon"></i>
+                <h3>${item.title}</h3>
+                <p>${item.desc}</p>
+            </div>
+        `).join('');
+
+        featContainer.innerHTML = `
+            <h2 class="features-heading">${storeData.features.heading}</h2>
+            <p class="features-desc">${storeData.features.desc}</p>
+            <div class="features-grid">
+                ${itemsHtml}
+            </div>
+        `;
+    }
+
     renderCustomerCarousel();
 
+    // RENDER CS & SOSMED BARU (HANYA IKON BENTUK BULAT)
     const contactSec = document.getElementById('customer-contact');
     let contactHtml = "";
 
@@ -299,28 +340,36 @@ function renderCustomer() {
     const hasSoc = Object.values(storeData.soc).some(val => val.trim() !== "");
 
     if (hasCs || hasSoc) {
+        contactHtml += `
+            <div style="display:flex; flex-direction:column; gap:20px;">
+        `;
+        
+        // Blok CS
         if (hasCs) {
-            contactHtml += `<h3>Customer Service</h3><div class="contact-grid">`;
-            if (storeData.cs.wa) contactHtml += `<a href="${formatLink(storeData.cs.wa)}" target="_blank" class="contact-link wa"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>`;
-            if (storeData.cs.tele) contactHtml += `<a href="${formatLink(storeData.cs.tele, 'tele')}" target="_blank" class="contact-link tele"><i class="fa-brands fa-telegram"></i> Telegram</a>`;
-            if (storeData.cs.ig) contactHtml += `<a href="${formatLink(storeData.cs.ig, 'ig')}" target="_blank" class="contact-link ig"><i class="fa-brands fa-instagram"></i> Instagram</a>`;
-            if (storeData.cs.x) contactHtml += `<a href="${formatLink(storeData.cs.x, 'x')}" target="_blank" class="contact-link x"><i class="fa-brands fa-x-twitter"></i> X (Twitter)</a>`;
-            if (storeData.cs.tk) contactHtml += `<a href="${formatLink(storeData.cs.tk, 'tk')}" target="_blank" class="contact-link tk"><i class="fa-brands fa-tiktok"></i> TikTok</a>`;
-            if (storeData.cs.fb) contactHtml += `<a href="${formatLink(storeData.cs.fb)}" target="_blank" class="contact-link fb"><i class="fa-brands fa-facebook-f"></i> Facebook</a>`;
-            if (storeData.cs.email) contactHtml += `<a href="mailto:${storeData.cs.email}" target="_blank" class="contact-link email"><i class="fa-solid fa-envelope"></i> Email</a>`;
-            contactHtml += `</div>`;
+            contactHtml += `<div><h3>Hubungi Layanan CS Kami</h3><div class="contact-icon-grid">`;
+            if (storeData.cs.wa) contactHtml += `<a href="${formatLink(storeData.cs.wa)}" target="_blank" class="contact-icon-btn wa" title="WhatsApp CS"><i class="fa-brands fa-whatsapp"></i></a>`;
+            if (storeData.cs.tele) contactHtml += `<a href="${formatLink(storeData.cs.tele, 'tele')}" target="_blank" class="contact-icon-btn tele" title="Telegram CS"><i class="fa-brands fa-telegram"></i></a>`;
+            if (storeData.cs.ig) contactHtml += `<a href="${formatLink(storeData.cs.ig, 'ig')}" target="_blank" class="contact-icon-btn ig" title="Instagram CS"><i class="fa-brands fa-instagram"></i></a>`;
+            if (storeData.cs.x) contactHtml += `<a href="${formatLink(storeData.cs.x, 'x')}" target="_blank" class="contact-icon-btn x" title="X (Twitter) CS"><i class="fa-brands fa-x-twitter"></i></a>`;
+            if (storeData.cs.tk) contactHtml += `<a href="${formatLink(storeData.cs.tk, 'tk')}" target="_blank" class="contact-icon-btn tk" title="TikTok CS"><i class="fa-brands fa-tiktok"></i></a>`;
+            if (storeData.cs.fb) contactHtml += `<a href="${formatLink(storeData.cs.fb)}" target="_blank" class="contact-icon-btn fb" title="Facebook CS"><i class="fa-brands fa-facebook-f"></i></a>`;
+            if (storeData.cs.email) contactHtml += `<a href="mailto:${storeData.cs.email}" target="_blank" class="contact-icon-btn email" title="Email CS"><i class="fa-solid fa-envelope"></i></a>`;
+            contactHtml += `</div></div>`;
         }
 
+        // Blok Sosmed
         if (hasSoc) {
-            contactHtml += `<h3 style="${hasCs ? 'margin-top:20px;' : ''}">Sosial Media</h3><div class="contact-grid">`;
-            if (storeData.soc.wa) contactHtml += `<a href="${formatLink(storeData.soc.wa)}" target="_blank" class="contact-link wa"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>`;
-            if (storeData.soc.tele) contactHtml += `<a href="${formatLink(storeData.soc.tele, 'tele')}" target="_blank" class="contact-link tele"><i class="fa-brands fa-telegram"></i> Telegram</a>`;
-            if (storeData.soc.ig) contactHtml += `<a href="${formatLink(storeData.soc.ig, 'ig')}" target="_blank" class="contact-link ig"><i class="fa-brands fa-instagram"></i> Instagram</a>`;
-            if (storeData.soc.x) contactHtml += `<a href="${formatLink(storeData.soc.x, 'x')}" target="_blank" class="contact-link x"><i class="fa-brands fa-x-twitter"></i> X (Twitter)</a>`;
-            if (storeData.soc.tk) contactHtml += `<a href="${formatLink(storeData.soc.tk, 'tk')}" target="_blank" class="contact-link tk"><i class="fa-brands fa-tiktok"></i> TikTok</a>`;
-            if (storeData.soc.fb) contactHtml += `<a href="${formatLink(storeData.soc.fb)}" target="_blank" class="contact-link fb"><i class="fa-brands fa-facebook-f"></i> Facebook</a>`;
-            contactHtml += `</div>`;
+            contactHtml += `<div><h3>Ikuti Sosial Media Kami</h3><div class="contact-icon-grid">`;
+            if (storeData.soc.wa) contactHtml += `<a href="${formatLink(storeData.soc.wa)}" target="_blank" class="contact-icon-btn wa" title="WhatsApp Sosmed"><i class="fa-brands fa-whatsapp"></i></a>`;
+            if (storeData.soc.tele) contactHtml += `<a href="${formatLink(storeData.soc.tele, 'tele')}" target="_blank" class="contact-icon-btn tele" title="Telegram Sosmed"><i class="fa-brands fa-telegram"></i></a>`;
+            if (storeData.soc.ig) contactHtml += `<a href="${formatLink(storeData.soc.ig, 'ig')}" target="_blank" class="contact-icon-btn ig" title="Instagram Sosmed"><i class="fa-brands fa-instagram"></i></a>`;
+            if (storeData.soc.x) contactHtml += `<a href="${formatLink(storeData.soc.x, 'x')}" target="_blank" class="contact-icon-btn x" title="X (Twitter) Sosmed"><i class="fa-brands fa-x-twitter"></i></a>`;
+            if (storeData.soc.tk) contactHtml += `<a href="${formatLink(storeData.soc.tk, 'tk')}" target="_blank" class="contact-icon-btn tk" title="TikTok Sosmed"><i class="fa-brands fa-tiktok"></i></a>`;
+            if (storeData.soc.fb) contactHtml += `<a href="${formatLink(storeData.soc.fb)}" target="_blank" class="contact-icon-btn fb" title="Facebook Sosmed"><i class="fa-brands fa-facebook-f"></i></a>`;
+            contactHtml += `</div></div>`;
         }
+
+        contactHtml += `</div>`;
 
         if (storeData.cs.address) {
             contactHtml += `<div class="contact-address"><i class="fa-solid fa-location-dot" style="color:var(--primary); margin-right:5px;"></i> ${storeData.cs.address}</div>`;
@@ -356,7 +405,6 @@ function generateProductHTML(p) {
     `;
 }
 
-// --- PERBAIKAN PENGHENTIAN WAKTU FLASH SALE ---
 function startCountdown() {
     clearInterval(countdownInterval);
     const end = new Date(storeData.flashSaleEnd).getTime();
@@ -368,7 +416,7 @@ function startCountdown() {
         if (distance <= 0) {
             document.getElementById('countdown-timer').innerText = "WAKTU HABIS";
             clearInterval(countdownInterval);
-            document.getElementById('flash-sale-section').style.display = "none"; // Otomatis hilang jika waktu habis
+            document.getElementById('flash-sale-section').style.display = "none";
             return;
         }
 
@@ -383,7 +431,6 @@ function startCountdown() {
         document.getElementById('countdown-timer').innerText = `${fH}j ${fM}m ${fS}s`;
     }, 1000);
 }
-// ----------------------------------------------
 
 function formatLink(input, type) {
     if (input.startsWith("http")) return input;
@@ -426,6 +473,18 @@ function populateAdmin() {
     document.getElementById('admin-wa').value = storeData.whatsapp;
     document.getElementById('admin-marquee').value = storeData.marquee;
     document.getElementById('admin-flash-end').value = storeData.flashSaleEnd;
+    
+    // Fitur Unggulan
+    if (storeData.features) {
+        document.getElementById('feat-heading').value = storeData.features.heading || "";
+        document.getElementById('feat-desc').value = storeData.features.desc || "";
+        for(let i = 0; i < 6; i++) {
+            if (storeData.features.items[i]) {
+                document.getElementById(`feat-t-${i+1}`).value = storeData.features.items[i].title;
+                document.getElementById(`feat-d-${i+1}`).value = storeData.features.items[i].desc;
+            }
+        }
+    }
 
     document.getElementById('cs-wa').value = storeData.cs.wa;
     document.getElementById('cs-tele').value = storeData.cs.tele;
@@ -469,9 +528,29 @@ function populateDatalists() {
 }
 
 async function saveGeneralSettings() {
+    // 1. Simpan Logo & Favicon
+    const logoInput = document.getElementById('admin-logo');
+    if (logoInput && logoInput.files && logoInput.files[0]) {
+        storeData.logoUrl = await toBase64(logoInput.files[0]);
+    }
+
+    const favInput = document.getElementById('admin-favicon');
+    if (favInput && favInput.files && favInput.files[0]) {
+        storeData.faviconUrl = await toBase64(favInput.files[0]);
+    }
+
+    // 2. Simpan Pengaturan Lainnya
     storeData.whatsapp = document.getElementById('admin-wa').value;
     storeData.marquee = document.getElementById('admin-marquee').value;
     storeData.flashSaleEnd = document.getElementById('admin-flash-end').value;
+
+    // Simpan Fitur Unggulan
+    storeData.features.heading = document.getElementById('feat-heading').value;
+    storeData.features.desc = document.getElementById('feat-desc').value;
+    for(let i = 0; i < 6; i++) {
+        storeData.features.items[i].title = document.getElementById(`feat-t-${i+1}`).value;
+        storeData.features.items[i].desc = document.getElementById(`feat-d-${i+1}`).value;
+    }
 
     storeData.cs.wa = document.getElementById('cs-wa').value;
     storeData.cs.tele = document.getElementById('cs-tele').value;
@@ -558,11 +637,7 @@ function renderAdminList() {
     if (searchQ) {
         filteredProducts = filteredProducts.filter(p => {
             const hay = [
-                p.category,
-                p.operator,
-                p.nominal,
-                p.description || '',
-                String(p.price ?? '')
+                p.category, p.operator, p.nominal, p.description || '', String(p.price ?? '')
             ].join(' ').toLowerCase();
             return hay.includes(searchQ);
         });
@@ -578,12 +653,13 @@ function renderAdminList() {
         if (p.isTrending) badgesHtml += `<span style="background:#ea580c;color:white;padding:2px 5px;border-radius:4px;font-size:0.6rem;">Trending</span>`;
         if (p.isFlashSale) badgesHtml += `<span style="background:#ef4444;color:white;padding:2px 5px;border-radius:4px;font-size:0.6rem;margin-top:3px;">Flash</span>`;
 
+        // Kolom HARGA dipindah sebelum DESKRIPSI
         list.innerHTML += `
             <div class="product-item ${statusClass}">
                 <span><strong>${p.category}</strong><small style="color:var(--text-muted); display:block; margin-top:3px;">${p.operator}</small></span>
                 <span>${p.nominal}</span>
-                <span>${displayDesc} <div style="margin-top:5px; display:flex; gap:3px; flex-direction:column; align-items:center;">${badgesHtml}</div></span>
                 <span style="color:var(--primary); font-weight:700">Rp ${p.price.toLocaleString('id-ID')}</span>
+                <span>${displayDesc} <div style="margin-top:5px; display:flex; gap:3px; flex-direction:column; align-items:center;">${badgesHtml}</div></span>
                 <div class="actions">
                     <button class="btn-toggle" style="background:${statusColor}" onclick="toggleStatus(${p.id})">${statusText}</button>
                     <button class="btn-edit" onclick="editProduct(${p.id})">Edit</button>
