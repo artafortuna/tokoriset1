@@ -267,3 +267,64 @@ textarea { resize: vertical; min-height: 60px; }
 .footer-links { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; opacity: 0.9; }
 .footer-links a { color: white; text-decoration: none; cursor: pointer; font-weight: 600; }
 .footer-links a:hover { text-decoration: underline; }
+
+/* --- FITUR UNGGULAN (FEATURED) --- */
+.features-section {
+    background: var(--card);
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    margin-top: 10px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+.features-heading {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 12px;
+}
+.features-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    line-height: 1.6;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 15px;
+    text-align: left;
+}
+.feature-card {
+    background: var(--bg);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    transition: 0.3s;
+}
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.1);
+    border-color: var(--primary);
+}
+.feature-icon {
+    font-size: 1.8rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+    display: inline-block;
+}
+.feature-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+.feature-card p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
