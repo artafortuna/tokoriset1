@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARTA FORTUNA - Top Up Tepercaya</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img id="header-logo" src="" alt="Logo" style="display:none;">
+            <span id="header-text">⚡ ARTA FORTUNA</span>
+        </div>
+        <div class="header-controls">
+            <button id="toggle-view-btn" onclick="toggleView()">Mode Admin</button>
+            <button id="theme-toggle" onclick="toggleTheme()">🌙</button>
+        </div>
+    </header>
+
+    <!-- only customer -->
+    <div class="marquee-container" id="promo-marquee-container">
+        <marquee id="promo-marquee" scrollamount="5">Selamat datang di Arta Fortuna! Layanan top up 24 jam murah dan cepat.</marquee>
+    </div>
+
+    <main id="customer-view">
+        <div class="banner-wrapper">
+            <div class="banner-slider" id="banner-slider"></div>
+        </div>
+
+        <div class="content-wrapper" id="trending-section" style="display: none;">
+            <div class="trending-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-fire" style="color: #ffed4a;"></i>
+                    <h2>Trending 🔥</h2>
+                </div>
+            </div>
+            <div class="product-grid" id="trending-product-grid"></div>
+        </div>
+
+        <div class="content-wrapper" id="flash-sale-section" style="display: none;">
+            <div class="flash-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-bolt" style="color: #fbbf24;"></i>
+                    <h2>Flash Sale</h2>
+                </div>
+                <div class="countdown-timer" id="countdown-timer">00j 00m 00s</div>
+            </div>
+            <div class="product-grid" id="flash-product-grid"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <h2 style="font-size: 1.3rem; margin-bottom: 5px;">PRODUK & LAYANAN</h2>
+            <p class="subtitle">Pilih kategori dan produk yang Anda butuhkan di bawah ini.</p>
+
+            <div class="contact-section" style="padding: 14px 16px; margin-bottom: 16px; border-radius: 12px;">
+                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                    <div style="flex: 1 1 260px;">
+                        <label for="customer-search" style="margin:0 0 6px; font-weight:700;">Cari Produk</label>
+                        <input id="customer-search" type="text" placeholder="Contoh: Telkomsel, 10.000, MLBB, pulsa..." oninput="renderCustomer()" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-tabs" id="category-tabs"></div>
+            <div class="tabs" id="operator-tabs"></div>
+            <div class="product-grid" id="product-grid"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="contact-section" id="customer-contact" style="display: none;"></div>
+        </div>
+    </main>
+
+    <main id="admin-view" style="display: none;">
+        <div class="admin-container">
+            <aside class="admin-sidebar">
+                <div class="sidebar-title">MENU ADMIN</div>
+                <ul id="admin-menu">
+                    <li class="active" onclick="switchAdminPage('admin-pengaturan', this)"><i class="fa-solid fa-gear"></i> Pengaturan Umum</li>
+                    <li onclick="switchAdminPage('admin-kontak', this)"><i class="fa-solid fa-address-book"></i> Kontak & Sosmed</li>
+                    <li onclick="switchAdminPage('admin-legal', this)"><i class="fa-solid fa-scale-balanced"></i> Halaman Legal</li>
+                    <li onclick="switchAdminPage('admin-tambah-produk', this)" id="menu-tambah"><i class="fa-solid fa-box-open"></i> Tambah Produk</li>
+                    <li onclick="switchAdminPage('admin-daftar-produk', this)"><i class="fa-solid fa-list"></i> Daftar Produk</li>
+                </ul>
+            </aside>
+
+            <div class="admin-content">
+
+                <div id="admin-pengaturan" class="admin-page active">
+                    <div class="admin-card">
+                        <h3>Pengaturan Umum, Banner & Flash Sale</h3>
+                        <label>Nomor WhatsApp Pembelian (Utama)</label>
+                        <input type="text" id="admin-wa" placeholder="Contoh: 6281234567890">
+
+                        <label>Teks Berjalan (Marquee)</label>
+                        <input type="text" id="admin-marquee">
+
+                        <label>Batas Waktu Flash Sale (Kosongkan jika tidak ada)</label>
+                        <input type="datetime-local" id="admin-flash-end">
+
+                        <div class="banner-inputs">
+                            <div class="help-text">Rasio banner yang presisi: <strong>16:5</strong></div>
+                            <label>Slide 1</label> <input type="file" id="b-input-1" accept="image/*">
+                            <label>Slide 2</label> <input type="file" id="b-input-2" accept="image/*">
+                            <label>Slide 3</label> <input type="file" id="b-input-3" accept="image/*">
+                            <label>Slide 4</label> <input type="file" id="b-input-4" accept="image/*">
+                            <label>Slide 5</label> <input type="file" id="b-input-5" accept="image/*">
+                        </div>
+
+                        <div class="banner-inputs" style="margin-top:14px;">
+                            <div class="help-text">
+                                Carousel Customer (8 gambar lokal).
+                                Otomatis horizontal, 30 detik/putaran.
+                                Item 130x70, radius kartu 12px, radius gambar 8px.
+                            </div>
+                            <label>Carousel 1</label> <input type="file" id="c-input-1" accept="image/*">
+                            <label>Carousel 2</label> <input type="file" id="c-input-2" accept="image/*">
+                            <label>Carousel 3</label> <input type="file" id="c-input-3" accept="image/*">
+                            <label>Carousel 4</label> <input type="file" id="c-input-4" accept="image/*">
+                            <label>Carousel 5</label> <input type="file" id="c-input-5" accept="image/*">
+                            <label>Carousel 6</label> <input type="file" id="c-input-6" accept="image/*">
+                            <label>Carousel 7</label> <input type="file" id="c-input-7" accept="image/*">
+                            <label>Carousel 8</label> <input type="file" id="c-input-8" accept="image/*">
+                        </div>
+
+                        <button onclick="saveGeneralSettings()" class="btn-save">Simpan Pengaturan</button>
+                    </div>
+                </div>
+
+                <div id="admin-kontak" class="admin-page">
+                    <div class="admin-card">
+                        <h3>🔗 Tautan Customer Service & Informasi Toko</h3>
+                        <div class="grid-inputs">
+                            <div><label>WhatsApp CS</label><input type="text" id="cs-wa" placeholder="Nomor WA"></div>
+                            <div><label>Telegram CS</label><input type="text" id="cs-tele" placeholder="Username/Link"></div>
+                            <div><label>Instagram CS</label><input type="text" id="cs-ig" placeholder="Username/Link"></div>
+                            <div><label>X (Twitter) CS</label><input type="text" id="cs-x" placeholder="Username/Link"></div>
+                            <div><label>TikTok CS</label><input type="text" id="cs-tk" placeholder="Username/Link"></div>
+                            <div><label>Facebook CS</label><input type="text" id="cs-fb" placeholder="Link Profil/Page"></div>
+                            <div><label>Email CS</label><input type="email" id="cs-email" placeholder="contoh@email.com"></div>
+                            <div style="grid-column: 1 / -1;"><label>Alamat Toko Fisik (Opsional)</label><input type="text" id="cs-address" placeholder="Jl. Contoh No. 1, Kota..."></div>
+                        </div>
+                    </div>
+
+                    <div class="admin-card">
+                        <h3>🌐 Tautan Sosial Media Resmi (Opsional)</h3>
+                        <div class="grid-inputs">
+                            <div><label>WhatsApp Sosmed</label><input type="text" id="soc-wa" placeholder="Nomor WA/Link"></div>
+                            <div><label>Telegram Sosmed</label><input type="text" id="soc-tele" placeholder="Username/Link"></div>
+                            <div><label>Instagram Sosmed</label><input type="text" id="soc-ig" placeholder="Username/Link"></div>
+                            <div><label>X (Twitter) Sosmed</label><input type="text" id="soc-x" placeholder="Username/Link"></div>
+                            <div><label>TikTok Sosmed</label><input type="text" id="soc-tk" placeholder="Username/Link"></div>
+                            <div><label>Facebook Sosmed</label><input type="text" id="soc-fb" placeholder="Link Profil/Page"></div>
+                        </div>
+                        <button onclick="saveGeneralSettings()" class="btn-save">Simpan Kontak & Sosmed</button>
+                    </div>
+                </div>
+
+                <div id="admin-legal" class="admin-page">
+                    <div class="admin-card">
+                        <h3>⚖️ Halaman Legal & Informasi</h3>
+                        <div class="help-text" style="margin-bottom:10px;">Isi teks untuk pop-up Kebijakan Privasi, FAQ, dll. Gunakan tag HTML dasar seperti &lt;br&gt; untuk baris baru.</div>
+                        <label>Kebijakan Privasi</label><textarea id="legal-privacy" rows="3"></textarea>
+                        <label>Syarat & Ketentuan</label><textarea id="legal-terms" rows="3"></textarea>
+                        <label>Refund Policy</label><textarea id="legal-refund" rows="3"></textarea>
+                        <label>FAQ (Tanya Jawab)</label><textarea id="legal-faq" rows="3"></textarea>
+
+                        <button onclick="saveGeneralSettings()" class="btn-save">Simpan Halaman Legal</button>
+                    </div>
+                </div>
+
+                <div id="admin-tambah-produk" class="admin-page">
+                    <div class="admin-card">
+                        <h3 id="form-title">Tambah Produk Baru</h3>
+                        <input type="hidden" id="edit-id">
+
+                        <label>Kategori Produk</label>
+                        <input type="text" id="prod-category" placeholder="Contoh: Pulsa, Paket Data..." list="list-category">
+                        <datalist id="list-category"></datalist>
+
+                        <label>Sub-Kategori / Operator</label>
+                        <input type="text" id="prod-operator" placeholder="Contoh: Telkomsel, Mobile Legends...\" list="list-operator">
+                        <datalist id="list-operator"></datalist>
+
+                        <label>Nominal / Nama Produk</label>
+                        <input type="text" id="prod-nominal" placeholder="Contoh: 10.000, 86 Diamonds..." list="list-nominal">
+                        <datalist id="list-nominal"></datalist>
+
+                        <label>Deskripsi Produk (Opsional)</label>
+                        <input type="text" id="prod-desc" placeholder="Contoh: Masa aktif 30 hari...">
+
+                        <label>Harga Jual (Rp)</label>
+                        <input type="number" id="prod-price" placeholder="Contoh: 12500">
+
+                        <div class="checkbox-group" style="display: flex; gap: 15px; margin-top: 15px;">
+                            <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" id="prod-trending"> 🔥 Masukkan ke Trending</label>
+                            <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" id="prod-flash"> ⚡ Masukkan ke Flash Sale</label>
+                        </div>
+
+                        <div class="form-buttons">
+                            <button id="btn-add" onclick="addProduct()" class="btn-save">Tambah Produk</button>
+                            <button id="btn-update" onclick="updateProduct()" class="btn-save" style="display:none; background:#0ea5e9;">Update Produk</button>
+                            <button id="btn-cancel" onclick="resetForm()" class="btn-save" style="display:none; background:#64748b;">Batal</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="admin-daftar-produk" class="admin-page">
+                    <div class="admin-card" style="margin-bottom: 0;">
+                        <div class="admin-header-flex">
+                            <h3>Daftar Produk Terinput</h3>
+
+                            <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+                                <div class="filter-group">
+                                    <label style="margin:0 6px 0 0; font-weight:700;">Filter Kategori:</label>
+                                    <select id="admin-filter-category" onchange="renderAdminList()">
+                                        <option value="Semua">Semua Kategori</option>
+                                    </select>
+                                </div>
+
+                                <div class="filter-group">
+                                    <div>
+                                        <label style="margin:0 0 6px;">Cari:</label>
+                                        <input id="admin-search" type="text" placeholder="Cari kategori/operator/nominal..." oninput="renderAdminList()" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <div class="product-list-header">
+                                <span>Kategori & Operator</span>
+                                <span>Nominal</span>
+                                <span>Deskripsi & Status</span>
+                                <span>Harga</span>
+                                <span>Aksi</span>
+                            </div>
+                            <div id="admin-product-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="content-wrapper">
+        <div class="customer-carousel-wrap" id="customer-carousel-wrap" style="display:none;">
+            <div class="customer-carousel-title">Partner / Info</div>
+            <div class="customer-carousel-viewport">
+                <div class="customer-carousel-track" id="customer-carousel-track"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="legal-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="modal-title">Judul</h3>
+                <button onclick="closeModal()" class="btn-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-content" id="modal-body">Isi...</div>
+        </div>
+    </div>
+
+    <footer class="full-footer">
+        <div class="footer-links">
+            <a onclick="openModal('privacy')">Kebijakan Privasi</a> |
+            <a onclick="openModal('terms')">Syarat & Ketentuan</a> |
+            <a onclick="openModal('refund')">Refund Policy</a> |
+            <a onclick="openModal('faq')">FAQ</a>
+        </div>
+        <p>&copy; 2026 <strong>ARTA FORTUNA</strong>. Hak Cipta Dilindungi.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
