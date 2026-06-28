@@ -18,7 +18,7 @@ body { background: var(--bg); color: var(--text); transition: 0.3s; padding-bott
 h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 5px; }
 h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: 15px; }
 
-header { background: var(--card); padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); /* changed */ position: static; top: 0; z-index: auto; }
+header { background: var(--card); padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: static; top: 0; z-index: auto; }
 .logo { display: flex; align-items: center; gap: 10px; }
 .logo img { height: 32px; width: auto; object-fit: contain; border-radius: 4px; }
 #header-text {
@@ -32,6 +32,7 @@ body.dark-mode #header-text { background: linear-gradient(110deg, var(--primary)
 
 .header-controls button { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
 
+/* --- PERBAIKAN MARQUEE --- */
 .marquee-container {
     background: linear-gradient(135deg, var(--primary), #34d399);
     color: white;
@@ -39,15 +40,24 @@ body.dark-mode #header-text { background: linear-gradient(110deg, var(--primary)
     font-size: 0.9rem;
     font-weight: 700;
     border-bottom: 1px solid rgba(255,255,255,0.2);
-    /* changed */ position: static;
+    position: static;
     top: auto;
     z-index: auto;
+    box-shadow: 0 6px 18px rgba(16,185,129,0.12);
+    width: 100%;
+    overflow: hidden; /* Potong teks yang keluar batas */
+    white-space: nowrap; /* Cegah teks turun ke bawah */
 }
-.marquee-container marquee {
-    padding: 0 5%;
-    opacity: 0.98;
+.marquee-content {
+    display: inline-block;
+    padding-left: 100%; /* Mulai dari luar kanan layar */
+    animation: marqueeMove 15s linear infinite; /* Kecepatan 15 detik */
 }
-.marquee-container { box-shadow: 0 6px 18px rgba(16,185,129,0.12); }
+@keyframes marqueeMove {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+/* ------------------------- */
 
 .banner-wrapper { padding: 15px 5%; max-width: 1200px; margin: 0 auto; }
 .banner-slider { position: relative; width: 100%; height: 240px; border-radius: 12px; overflow: hidden; background: #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
@@ -155,14 +165,32 @@ textarea { resize: vertical; min-height: 60px; }
 .admin-header-flex h3 { margin-bottom: 0; }
 .filter-group { display: flex; align-items: center; gap: 8px; }
 
+/* --- PERBAIKAN TABEL ADMIN BIAR BISA DIGESER KANAN-KIRI --- */
 .table-container { width: 100%; overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background: rgba(0,0,0,0.01); }
-.product-list-header { display: grid; grid-template-columns: 2fr 1.5fr 2.5fr 1.5fr 1.5fr; background: linear-gradient(135deg, #059669, var(--primary-dark)); color: white; font-weight: 700; font-size: 0.85rem; }
+.product-list-header { 
+    display: grid; 
+    grid-template-columns: 2fr 1.5fr 2.5fr 1.5fr 1.5fr; 
+    min-width: 800px; /* Tambahan agar rapi dan memunculkan scroll */
+    background: linear-gradient(135deg, #059669, var(--primary-dark)); 
+    color: white; 
+    font-weight: 700; 
+    font-size: 0.85rem; 
+}
 .product-list-header span { padding: 12px 12px; border-right: 1px solid rgba(255,255,255,0.25); text-align: center; }
 .product-list-header span:last-child { border-right: none; }
 
-.product-item { display: grid; grid-template-columns: 2fr 1.5fr 2.5fr 1.5fr 1.5fr; align-items: stretch; font-size: 0.85rem; border-top: 1px solid var(--border); background: rgba(255,255,255,0.0); }
+.product-item { 
+    display: grid; 
+    grid-template-columns: 2fr 1.5fr 2.5fr 1.5fr 1.5fr; 
+    min-width: 800px; /* Tambahan agar sejajar dengan header saat digulir */
+    align-items: stretch; 
+    font-size: 0.85rem; 
+    border-top: 1px solid var(--border); 
+    background: rgba(255,255,255,0.0); 
+}
 .product-item:hover { background: rgba(16,185,129,0.06); }
 .product-item.inactive { background: rgba(203, 213, 225, 0.2); opacity: 0.6; }
+/* -------------------------------------------------------- */
 
 .product-item > span, .product-item .actions { padding: 12px 12px; border-right: 1px solid var(--border); }
 .product-item .actions { border-right: none; }
@@ -201,16 +229,18 @@ textarea { resize: vertical; min-height: 60px; }
     background: rgba(0,0,0,0.01);
     padding: 10px;
 }
+/* --- PERBAIKAN KECEPATAN CAROUSEL --- */
 .customer-carousel-track{
     display:flex;
     gap: 10px;
     width: max-content;
-    animation: customerCarouselScroll 30s linear infinite;
+    animation: customerCarouselScroll 60s linear infinite; /* Diperlambat dari 30s ke 60s */
 }
 @keyframes customerCarouselScroll{
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
 }
+/* ------------------------------------ */
 .customer-carousel-item{
     width: 130px;
     height: 70px;
