@@ -87,7 +87,9 @@ function renderCustomerCarousel() {
         </div>
     `).join('');
 
-    wrap.style.display = 'block';
+    // PERBAIKAN: Cek apakah sedang di Mode Customer. Jika tidak, tetap sembunyikan.
+    const isCustomerMode = document.getElementById('customer-view').style.display !== 'none';
+    wrap.style.display = isCustomerMode ? 'block' : 'none';
 }
 
 function setCustomerOnlyVisibility(isCustomerMode) {
@@ -95,7 +97,12 @@ function setCustomerOnlyVisibility(isCustomerMode) {
     const custCarouselWrap = document.getElementById('customer-carousel-wrap');
 
     if (promoWrap) promoWrap.style.display = isCustomerMode ? 'block' : 'none';
-    if (custCarouselWrap) custCarouselWrap.style.display = isCustomerMode ? '' : 'none';
+    
+    // PERBAIKAN: Pastikan carousel hanya muncul saat mode customer DAN ada fotonya
+    if (custCarouselWrap) {
+        const items = (storeData.customerCarousel || []).filter(Boolean);
+        custCarouselWrap.style.display = (isCustomerMode && items.length > 0) ? 'block' : 'none';
+    }
 }
 
 async function init() {
@@ -197,11 +204,21 @@ function renderCustomer() {
         trendingSec.style.display = "none";
     }
 
+    // --- PERBAIKAN LOGIKA FLASH SALE ---
     const flashSec = document.getElementById('flash-sale-section');
     const flashGrid = document.getElementById('flash-product-grid');
     const flashProducts = storeData.products.filter(p => p.isActive !== false && p.isFlashSale);
 
-    if (flashProducts.length > 0 && storeData.flashSaleEnd) {
+    let isFlashSaleActive = false;
+    if (storeData.flashSaleEnd) {
+        const end = new Date(storeData.flashSaleEnd).getTime();
+        const now = new Date().getTime();
+        if (end - now > 0) { // Pastikan waktu belum lewat
+            isFlashSaleActive = true;
+        }
+    }
+
+    if (flashProducts.length > 0 && isFlashSaleActive) {
         flashGrid.innerHTML = '';
         flashProducts.forEach(p => { flashGrid.innerHTML += generateProductHTML(p); });
         flashSec.style.display = "block";
@@ -210,6 +227,7 @@ function renderCustomer() {
         flashSec.style.display = "none";
         clearInterval(countdownInterval);
     }
+    // ------------------------------------
 
     const activeProducts = storeData.products.filter(p => p.isActive !== false);
     const categories = [...new Set(activeProducts.map(p => p.category))];
@@ -333,6 +351,7 @@ function generateProductHTML(p) {
     `;
 }
 
+// --- PERBAIKAN PENGHENTIAN WAKTU FLASH SALE ---
 function startCountdown() {
     clearInterval(countdownInterval);
     const end = new Date(storeData.flashSaleEnd).getTime();
@@ -341,9 +360,10 @@ function startCountdown() {
         const now = new Date().getTime();
         const distance = end - now;
 
-        if (distance < 0) {
+        if (distance <= 0) {
             document.getElementById('countdown-timer').innerText = "WAKTU HABIS";
             clearInterval(countdownInterval);
+            document.getElementById('flash-sale-section').style.display = "none"; // Otomatis hilang jika waktu habis
             return;
         }
 
@@ -358,6 +378,7 @@ function startCountdown() {
         document.getElementById('countdown-timer').innerText = `${fH}j ${fM}m ${fS}s`;
     }, 1000);
 }
+// ----------------------------------------------
 
 function formatLink(input, type) {
     if (input.startsWith("http")) return input;
