@@ -17,11 +17,210 @@ let storeData = {
     products: [],
     cs: { wa: "", tele: "", ig: "", x: "", tk: "", fb: "", email: "", address: "" },
     soc: { wa: "", tele: "", ig: "", x: "", tk: "", fb: "" },
+    
+    // TEMPLATE HALAMAN LEGAL & INFO
     legal: {
-        privacy: "Informasi Kebijakan Privasi Toko belum diatur.",
-        terms: "Informasi Syarat & Ketentuan belum diatur.",
-        refund: "Informasi Kebijakan Pengembalian Dana belum diatur.",
-        faq: "Daftar Tanya Jawab belum diatur."
+        privacy: `UMUM
+
+- Kebijakan Privasi ini merupakan kesepakatan antara {{BRAND}} dan Pengguna.
+- Kebijakan Privasi ini merupakan bagian yang tidak terpisahkan dari Syarat dan Ketentuan pada {{BRAND}}.
+- {{BRAND}} berhak untuk mengubah Kebijakan Privasi untuk disesuaikan dengan perkembangan teknologi, praktik bisnis, atau hukum.
+
+KETENTUAN HUKUM
+
+Bahwa kebijakan privasi pada platform {{BRAND}} tunduk kepada PerUndang-Undangan dan hukum yang berlaku di Indonesia yang berkaitan dengan sistem elektronik dan perlindungan data pribadi diantaranya Undang-Undang Nomor 1 Tahun 2024 tentang Informasi dan Transaksi Elektronik jis. Undang-Undang Nomor 27 Tahun 2022 tentang Perlindungan Data Pribadi jis. Peraturan Pemerintah Nomor 71 Tahun 2019 tentang Penyelenggaraan Sistem dan Transaksi Elektronik atau Peraturan PerUndang-Undangan yang berkaitan.
+
+DATA PENGGUNA
+
+- Pihak {{BRAND}} dalam mendukung dan mengoptimalkan layanan pada Platform {{BRAND}} berhak meminta data pribadi Pengguna yang dibutuhkan.
+- Dengan memberikan informasi pribadi kepada {{BRAND}}, Pengguna melepaskan hak atas kerugian, tuntutan, dan gugatan yang mungkin timbul terkait dengan pemanfaatan, atau pengungkapan informasi kepada Pihak {{BRAND}}.
+- Pengguna memanfaatkan layanan {{BRAND}} dengan memberikan informasi yang dibutuhkan oleh {{BRAND}} maka Pengguna telah memberikan izin kepada Pihak {{BRAND}} menerima, mengelola, menyimpan, dan aktivitas lainnya dalam sistem {{BRAND}}.
+- Pengguna menyatakan pemberian informasi pribadi pada sistem {{BRAND}} dilakukan dengan sadar, dan dalam kondisi cakap.
+- Pengguna menyatakan jika data pribadi yang diinput ke dalam sistem {{BRAND}} adalah asli dan merupakan hak milik pribadi Pengguna.
+- Pengguna berhak untuk melakukan pemutakhiran data pribadi yang telah diinput pada sistem {{BRAND}}.
+- {{BRAND}} berhak untuk meminta Pengguna melakukan pemutakhiran data pribadi pada sistem {{BRAND}} bilamana Pengguna belum melakukan pemutakhiran data terbaru.
+- Pengguna membebaskan {{BRAND}} dari segala tuntutan ganti rugi, atau tuntutan lain yang diakibatkan oleh kegagalan proses transaksi oleh karena kurang lengkapnya data pribadi Pengguna pada sistem {{BRAND}}.
+- {{BRAND}} akan melindungi data pribadi termasuk menjaga kerahasiaan data pribadi yang diberikan Pengguna pada sistem {{BRAND}}.
+
+PENGUMPULAN
+
+1. Mekanisme pengumpulan data Pengguna dilakukan mulai dari Pengguna menggunakan layanan pada platform {{BRAND}} dengan cara mengisi identitas yang diminta.
+2. Data pribadi Pengguna akan disimpan secara otomatis pada sistem {{BRAND}} ketika Pengguna menyetujui segala Syarat dan Ketentuan maupun Kebijakan Privasi yang ditetapkan oleh {{BRAND}}.
+
+PENGGUNAAN
+
+1. Bahwa dalam menggunakan data Pengguna {{BRAND}} memiliki tujuan untuk melancarkan proses layanan dan transaksi produk dari Pengguna.
+2. Dalam menggunakan data Pengguna, {{BRAND}} juga bertujuan untuk menyediakan, meningkatkan, maupun mengembangkan layanan pada {{BRAND}} atau untuk menganalisa masalah yang timbul pada {{BRAND}}.
+3. Dalam menggunakan data Pengguna, {{BRAND}} juga bertujuan untuk menawarkan atau merekomendasikan fitur, produk, atau layanan pada platform {{BRAND}}.
+4. Dalam menggunakan data Pengguna, {{BRAND}} bertujuan untuk mematuhi kewajiban hukum yang diminta oleh otoritas maupun lembaga hukum yang berwenang.
+5. Bahwa data Pengguna yang digunakan oleh {{BRAND}} juga bertujuan untuk mempermudah komunikasi antara Pengguna dengan {{BRAND}}.
+6. {{BRAND}} dalam menggunakan data pribadi milik Pengguna untuk memudahkan layanan Pengguna dengan Pihak Ketiga (apabila dibutuhkan). Pengguna tidak diperkenankan untuk memberikan data pribadinya secara langsung ke Pihak Ketiga tanpa melalui situs dari {{BRAND}}. Apabila terdapat hal-hal yang merugikan oleh karena hal tersebut, maka menjadi tanggung jawab Pengguna sepenuhnya.
+7. {{BRAND}} akan menggunakan data pribadi Pengguna untuk mendeteksi atau mencegah adanya tindakan pelanggaran hukum.
+8. {{BRAND}} menggunakan data pribadi Pengguna untuk tujuan lain selain yang tertuang dalam kebijakan privasi ini yang disampaikan kepada Pengguna untuk tujuan dan kepentingan hukum.
+
+PENYIMPANAN
+
+1. {{BRAND}} berhak menyimpan data pribadi Pengguna untuk tujuan layanan pada Platform {{BRAND}}, tujuan kebijakan privasi, serta untuk tujuan yang ditetapkan oleh hukum dan Peraturan perUndang-Undangan.
+2. Data pribadi Pengguna akan disimpan oleh Platform {{BRAND}} dari awal Pengguna mengisi identitas pada sistem {{BRAND}} hingga Pengguna berhenti menggunakan layanan {{BRAND}}.
+
+PENGHAPUSAN
+
+Bahwa {{BRAND}} akan melakukan penghapusan data Pengguna apabila:
+
+- Pengguna tidak lagi menggunakan layanan {{BRAND}} dengan tetap memperhatikan ketentuan waktu penyimpanan data pribadi pada layanan {{BRAND}} yakni selama 2 tahun setelah akun dihapus oleh Pengguna.
+- Pengguna mengajukan penghapusan data pribadi kepada {{BRAND}} dengan menyertakan formulir penghapusan data, bukti KTP atau identitas diri lainnya, dan alasan penghapusan data pribadi dari layanan {{BRAND}}.
+- {{BRAND}} dapat menolak perubahan atau penghapusan data pribadi Pengguna apabila alasan penghapusan data pribadi Pengguna bertentangan dengan hukum.
+- {{BRAND}} akan menghapus data pribadi milik Pengguna apabila {{BRAND}} menganggap data pribadi milik Pengguna sudah tidak lagi diperlukan atau menurut hukum terdapat kewajiban untuk menghapus data pribadi Pengguna.
+
+TANGGUNG JAWAB
+
+- Pengguna bertanggung jawab atas keamanan data pribadi Pengguna. Oleh karenanya Pengguna disarankan untuk melakukan pengamanan yang kuat terhadap kata sandi, PIN, serta melakukan pembatasan terhadap akun miliknya.
+- Pengguna bertanggung jawab atas data pribadi saat menggunakan layanan {{BRAND}} saat akun Pengguna digunakan atau diakses oleh Pihak Ketiga.
+- Bahwa Pengguna harus segera melakukan laporan kepada {{BRAND}} saat mengetahui bahwa data pribadinya dalam menggunakan layanan {{BRAND}} disalahgunakan oleh Pihak Ketiga atau lainnya yang tidak bertanggung jawab.
+- Bahwa {{BRAND}} tidak bertanggung jawab atas kelalaian Pengguna dalam hal memberikan data pribadinya kepada Pihak lain.
+- Bahwa {{BRAND}} tidak bertanggung jawab atas input data yang dilakukan oleh anak dibawah 18 tahun tanpa pengawasan orang tua.
+- Bahwa {{BRAND}} dilepaskan dari segala tanggung jawab yang berkaitan dengan pengamanan data pribadi Pengguna apabila terdapat keadaan yang diluar kendali atau kontrol {{BRAND}}.
+
+HUBUNGI KAMI
+
+Pengguna dapat mengajukan keluhan dan saran pada kontak person {{BRAND}} melalui:
+
+WhatsApp : {{WA}}
+Email    : {{EMAIL}}`,
+        
+        terms: `UMUM
+
+- Syarat dan Ketentuan ini mengatur penggunaan layanan pada platform {{BRAND}} oleh seluruh Pengguna.
+- Dengan mendaftar dan/atau menggunakan layanan {{BRAND}}, Pengguna dianggap telah membaca, memahami, dan menyetujui seluruh isi Syarat dan Ketentuan ini.
+- {{BRAND}} berhak mengubah Syarat dan Ketentuan sewaktu-waktu sesuai kebutuhan layanan dan ketentuan hukum yang berlaku.
+
+DEFINISI
+
+- "Platform" berarti situs, aplikasi, dan seluruh layanan digital yang dioperasikan oleh {{BRAND}}.
+- "Pengguna" berarti setiap orang yang mengakses atau menggunakan layanan pada Platform {{BRAND}}, baik sebagai tamu maupun member terdaftar.
+- "Produk" berarti pulsa, paket data, token listrik, voucher game, pembayaran tagihan, dan layanan digital lain yang dijual melalui Platform {{BRAND}}.
+
+AKUN MEMBER
+
+- Member wajib memberikan data yang benar, akurat, dan terkini saat pendaftaran.
+- Member bertanggung jawab penuh atas keamanan username, password, PIN, dan API Key miliknya.
+- {{BRAND}} berhak menonaktifkan, menangguhkan, atau menghapus akun yang melanggar ketentuan, melakukan kecurangan, atau merugikan pihak lain.
+
+TRANSAKSI
+
+- Seluruh transaksi yang sudah berhasil diproses oleh sistem bersifat final dan tidak dapat dibatalkan secara sepihak oleh Pengguna.
+- Pengguna wajib memastikan nomor tujuan, ID game, atau data pelanggan lainnya sudah benar sebelum melakukan pembayaran. Kesalahan input bukan tanggung jawab {{BRAND}}.
+- Waktu pemrosesan transaksi mengikuti waktu pemrosesan dari provider/operator dan dapat tertunda di luar kendali {{BRAND}}.
+
+PEMBAYARAN
+
+- Pembayaran dilakukan melalui metode pembayaran yang tersedia pada Platform {{BRAND}}.
+- Pengguna tidak diperkenankan melakukan pembayaran di luar metode resmi yang disediakan {{BRAND}}.
+- Saldo deposit member tidak dapat ditarik kembali dalam bentuk uang tunai dan hanya dapat digunakan untuk transaksi pada Platform {{BRAND}}.
+
+PENGEMBALIAN DANA (REFUND)
+
+- Pengembalian dana hanya dilakukan untuk transaksi yang gagal diproses oleh sistem/provider.
+- Dana akan dikembalikan ke saldo member atau metode pembayaran asal sesuai kebijakan {{BRAND}}.
+- {{BRAND}} berhak menolak pengajuan refund yang tidak memenuhi syarat atau terindikasi kecurangan.
+
+LARANGAN
+
+Pengguna dilarang:
+
+- Menggunakan layanan {{BRAND}} untuk kegiatan yang melanggar hukum, penipuan, pencucian uang, atau aktivitas ilegal lainnya.
+- Mengakses sistem {{BRAND}} secara tidak sah, melakukan reverse engineering, atau menyerang infrastruktur layanan.
+- Menyalahgunakan API, melakukan abuse rate limit, atau menjual ulang akses yang melanggar ketentuan.
+- Menggunakan data palsu, identitas orang lain, atau alat pembayaran yang bukan miliknya secara sah.
+
+BATASAN TANGGUNG JAWAB
+
+- {{BRAND}} tidak bertanggung jawab atas kerugian yang timbul akibat kesalahan input data oleh Pengguna.
+- {{BRAND}} tidak bertanggung jawab atas gangguan layanan akibat keadaan kahar (force majeure), gangguan jaringan, gangguan provider, atau gangguan pihak ketiga lainnya.
+- Tanggung jawab maksimal {{BRAND}} atas setiap transaksi terbatas pada nilai transaksi yang bersangkutan.
+
+PERUBAHAN LAYANAN
+
+- {{BRAND}} berhak menambah, mengubah, atau menghentikan sebagian atau seluruh fitur layanan tanpa pemberitahuan terlebih dahulu.
+- Harga produk dapat berubah sewaktu-waktu mengikuti harga dari provider.
+
+HUKUM YANG BERLAKU
+
+Syarat dan Ketentuan ini tunduk pada hukum yang berlaku di Republik Indonesia. Setiap sengketa yang timbul akan diselesaikan secara musyawarah, dan apabila tidak tercapai akan diselesaikan melalui jalur hukum yang berlaku.
+
+HUBUNGI KAMI
+
+Pertanyaan terkait Syarat dan Ketentuan ini dapat disampaikan kepada {{BRAND}} melalui:
+
+WhatsApp : {{WA}}
+Email    : {{EMAIL}}`,
+
+        refund: `SIFAT PRODUK DIGITAL
+
+{{BRAND}} ({{DOMAIN}}) menjual produk digital seperti voucher game, top up diamond/UC/CP, pulsa, paket data, e-money, token PLN, dan layanan digital lainnya. Karena produk dikirim secara otomatis dan instan ke ID/nomor tujuan, transaksi yang telah berhasil diproses dan terkirim tidak dapat dibatalkan.
+
+KONDISI YANG BERHAK ATAS PENGEMBALIAN DANA
+
+Pengembalian dana (refund) hanya diberikan apabila terjadi salah satu kondisi berikut:
+
+- Pembayaran sudah berhasil diterima, namun produk gagal/tidak terkirim dan tidak dapat diproses ulang oleh sistem maupun supplier.
+- Terjadi pembayaran ganda (double payment) untuk satu pesanan yang sama.
+- Produk/layanan sedang tidak tersedia setelah pembayaran dilakukan dan tidak dapat digantikan dengan produk setara.
+- Terjadi kesalahan harga atau kesalahan sistem dari pihak {{BRAND}}.
+
+KONDISI YANG TIDAK DAPAT DIKEMBALIKAN
+
+- Kesalahan input ID/nomor tujuan, server, atau nominal yang dilakukan oleh pelanggan.
+- Produk sudah berhasil terkirim sesuai data yang dimasukkan pelanggan.
+- Pelanggan berubah pikiran setelah transaksi selesai.
+- Pelanggaran terhadap Syarat & Ketentuan, kecurangan, atau penyalahgunaan promo.
+
+CARA MENGAJUKAN PENGEMBALIAN DANA
+
+- Hubungi Layanan Pelanggan kami melalui tombol Customer Service di pojok kanan bawah halaman atau email {{EMAIL}}.
+- Sertakan nomor invoice/ID transaksi, tanggal transaksi, dan bukti pembayaran.
+- Pengajuan refund maksimal 7 (tujuh) hari sejak tanggal transaksi.
+
+PROSES & WAKTU PENGEMBALIAN
+
+- Pengajuan akan diverifikasi terlebih dahulu oleh tim kami dalam 1x24 jam hari kerja.
+- Apabila disetujui, dana dapat dikembalikan ke saldo {{BRAND}} (instan) atau ke metode pembayaran/rekening asal.
+- Pengembalian ke rekening/metode pembayaran asal umumnya membutuhkan waktu 3-14 hari kerja tergantung kebijakan bank/penyedia pembayaran.
+- Dana yang dikembalikan adalah nominal transaksi; biaya layanan pihak ketiga (jika ada) dapat dipotong sesuai ketentuan penyedia pembayaran.
+
+KONTAK
+
+Untuk pertanyaan terkait Kebijakan Pengembalian Dana ini, hubungi Layanan Pelanggan kami melalui kontak yang tersedia, atau email {{EMAIL}}.`,
+
+        faq: `1. Apa itu {{BRAND}}?
+{{BRAND}} ({{DOMAIN}}) adalah platform top up digital yang menyediakan pengisian voucher game, top up diamond/UC/CP, pulsa, paket data, e-money, token PLN, dan layanan digital lainnya secara cepat, aman, dan otomatis 24 jam.
+
+2. Bagaimana cara melakukan pemesanan?
+- Pilih game atau produk yang ingin dibeli.
+- Masukkan ID/nomor tujuan dan pilih nominal/paket.
+- Pilih metode pembayaran yang tersedia.
+- Lakukan pembayaran, lalu produk akan otomatis dikirim ke ID/nomor tujuan.
+
+3. Metode pembayaran apa saja yang tersedia?
+Kami menerima berbagai metode pembayaran resmi seperti transfer bank, Virtual Account, e-wallet (QRIS, dll), kartu kredit/debit, saldo {{BRAND}}. Pilihan metode dapat berbeda tergantung produk dan wilayah.
+
+4. Berapa lama pesanan saya diproses?
+Sebagian besar pesanan diproses otomatis dan instan setelah pembayaran terverifikasi. Pada kondisi tertentu (gangguan supplier atau jam sibuk), proses dapat memerlukan beberapa menit hingga maksimal 1x24 jam.
+
+5. Pesanan saya belum masuk, apa yang harus dilakukan?
+Pastikan ID/nomor tujuan yang dimasukkan sudah benar. Jika pembayaran sudah berhasil namun produk belum diterima dalam waktu wajar, hubungi Customer Service kami dengan menyertakan nomor invoice/ID transaksi dan bukti pembayaran.
+
+6. Apakah saya bisa membatalkan atau refund pesanan?
+Produk digital yang sudah berhasil terkirim tidak dapat dibatalkan. Pengembalian dana hanya berlaku pada kondisi tertentu (mis. produk gagal terkirim atau pembayaran ganda). Selengkapnya lihat Kebijakan Pengembalian Dana.
+
+7. Apakah harga di {{BRAND}} sudah final?
+Harga yang tertera adalah harga yang Anda bayar. Harga dapat berubah sewaktu-waktu mengikuti harga pasar. Untuk wilayah non-Indonesia, harga ditampilkan dalam mata uang setempat sesuai kurs yang berlaku.
+
+8. Apakah transaksi di {{BRAND}} aman?
+Ya. Pembayaran diproses melalui penyedia pembayaran (payment gateway) resmi dan tersertifikasi. Kami tidak menyimpan data sensitif kartu Anda. Lihat Kebijakan Privasi dan Syarat & Ketentuan.
+
+9. Bagaimana cara menghubungi Customer Service?
+Hubungi kami melalui link kontak yang tersedia, atau email {{EMAIL}}. Tim kami siap membantu setiap hari.`
     },
     features: {
         heading: "ARTA FORTUNA : WEBSITE TOPUP GAME & VOUCHER TEPERCAYA DI INDONESIA",
@@ -112,7 +311,6 @@ function setCustomerOnlyVisibility(isCustomerMode) {
 
     if (promoWrap) promoWrap.style.display = isCustomerMode ? 'block' : 'none';
     
-    // Perbaikan: Selalu tampilkan asalkan di mode customer
     if (featuresWrap) {
         featuresWrap.style.display = isCustomerMode ? 'block' : 'none';
     }
@@ -129,12 +327,25 @@ async function init() {
         const saved = await loadFromDB();
         if (saved) {
             let defaultFeatures = { ...storeData.features };
+            let defaultLegal = { ...storeData.legal };
+            
             storeData = { ...storeData, ...saved };
             storeData.cs = { ...{ wa: "", tele: "", ig: "", x: "", tk: "", fb: "", email: "", address: "" }, ...(saved.cs || {}) };
             storeData.soc = { ...{ wa: "", tele: "", ig: "", x: "", tk: "", fb: "" }, ...(saved.soc || {}) };
-            storeData.legal = { ...storeData.legal, ...(saved.legal || {}) };
             
-            // Perbaikan: Mencegah kehilangan struktur data fitur unggulan saat loading
+            // Terapkan data legal dari database jika ada
+            storeData.legal = saved.legal ? { ...defaultLegal, ...saved.legal } : defaultLegal;
+            
+            // --- FIX: PAKSA TIMPA JIKA DATABASE MASIH MENYIMPAN TEKS LAMA ---
+            if (storeData.legal.privacy === "Informasi Kebijakan Privasi Toko belum diatur.") {
+                storeData.legal.privacy = defaultLegal.privacy;
+                storeData.legal.terms = defaultLegal.terms;
+                storeData.legal.refund = defaultLegal.refund;
+                storeData.legal.faq = defaultLegal.faq;
+                await saveToDB(storeData); // Simpan otomatis template baru ke database
+            }
+            // -----------------------------------------------------------------
+            
             storeData.features = saved.features ? { ...defaultFeatures, ...saved.features } : defaultFeatures;
             if (!storeData.features.items || storeData.features.items.length === 0) {
                 storeData.features.items = defaultFeatures.items;
@@ -313,7 +524,6 @@ function renderCustomer() {
 
     filtered.forEach(p => { grid.innerHTML += generateProductHTML(p); });
 
-    // Perbaikan Render Fitur Unggulan
     const featContainer = document.getElementById('features-container');
     if (featContainer && storeData.features && storeData.features.items) {
         let itemsHtml = storeData.features.items.map(item => `
@@ -454,18 +664,40 @@ function startSlider() {
     }, 7000);
 }
 
+// ==============================================
+// LOGIKA CERDAS PENGGANTI VARIABEL DALAM MODAL
+// ==============================================
 function openModal(type) {
     const modal = document.getElementById('legal-modal');
     const title = document.getElementById('modal-title');
     const body = document.getElementById('modal-body');
 
-    if (type === 'privacy') { title.innerText = "Kebijakan Privasi"; body.innerHTML = storeData.legal.privacy; }
-    else if (type === 'terms') { title.innerText = "Syarat & Ketentuan"; body.innerHTML = storeData.legal.terms; }
-    else if (type === 'refund') { title.innerText = "Refund Policy"; body.innerHTML = storeData.legal.refund; }
-    else if (type === 'faq') { title.innerText = "FAQ (Tanya Jawab)"; body.innerHTML = storeData.legal.faq; }
+    let rawText = "";
+    if (type === 'privacy') { title.innerText = "Kebijakan Privasi"; rawText = storeData.legal.privacy; }
+    else if (type === 'terms') { title.innerText = "Syarat & Ketentuan"; rawText = storeData.legal.terms; }
+    else if (type === 'refund') { title.innerText = "Refund Policy"; rawText = storeData.legal.refund; }
+    else if (type === 'faq') { title.innerText = "FAQ (Tanya Jawab)"; rawText = storeData.legal.faq; }
 
+    // Mengambil data identitas toko untuk disisipkan
+    const brandName = "ARTA FORTUNA";
+    const domainName = window.location.hostname || "artafortuna.com";
+    const csWA = storeData.cs.wa || storeData.whatsapp || "Belum ada nomor WA";
+    const csEmail = storeData.cs.email || "Belum ada email";
+
+    // Melakukan replace pada kurung kurawal
+    let parsedText = rawText
+        .replace(/{{BRAND}}/g, brandName)
+        .replace(/{{DOMAIN}}/g, domainName)
+        .replace(/{{WA}}/g, csWA)
+        .replace(/{{EMAIL}}/g, csEmail);
+
+    // Mengubah spasi enter murni menjadi tag <br> HTML agar paragraf rapi
+    parsedText = parsedText.replace(/\n/g, '<br>');
+
+    body.innerHTML = parsedText;
     modal.style.display = 'flex';
 }
+
 function closeModal() { document.getElementById('legal-modal').style.display = 'none'; }
 
 function populateAdmin() {
@@ -500,6 +732,7 @@ function populateAdmin() {
     document.getElementById('soc-tk').value = storeData.soc.tk;
     document.getElementById('soc-fb').value = storeData.soc.fb;
 
+    // Mengisi kolom di admin panel
     document.getElementById('legal-privacy').value = storeData.legal.privacy;
     document.getElementById('legal-terms').value = storeData.legal.terms;
     document.getElementById('legal-refund').value = storeData.legal.refund;
