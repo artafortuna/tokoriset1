@@ -204,11 +204,11 @@ function switchAdminPage(pageId, element) {
 // ------------------------------------------
 function selectProduct(id) {
     selectedProductId = id;
-    // Hapus kelas selected dari semua kartu di grid reguler
-    document.querySelectorAll('#product-grid .product-card').forEach(el => el.classList.remove('selected'));
-    // Tambahkan kelas selected pada kartu yang diklik
-    const card = document.getElementById(`prod-card-${id}`);
-    if (card) card.classList.add('selected');
+    // Hapus kelas selected dari SEMUA kartu (Trending, Flash Sale, dan Reguler)
+    document.querySelectorAll('.product-card').forEach(el => el.classList.remove('selected'));
+    
+    // Tambahkan kelas selected (Bisa terpilih 2 tempat sekaligus jika produk ada di Flash Sale & Grid Reguler)
+    document.querySelectorAll(`#prod-card-${id}`).forEach(card => card.classList.add('selected'));
 }
 
 function selectPayment(method) {
@@ -280,8 +280,7 @@ function renderCustomer() {
 
     if (trendingProducts.length > 0) {
         trendingGrid.innerHTML = '';
-        // Context: trending -> tombol beli muncul langsung
-        trendingProducts.forEach(p => { trendingGrid.innerHTML += generateProductHTML(p, 'trending'); });
+        trendingProducts.forEach(p => { trendingGrid.innerHTML += generateProductHTML(p); });
         trendingSec.style.display = "block";
     } else {
         trendingSec.style.display = "none";
@@ -300,8 +299,7 @@ function renderCustomer() {
 
     if (flashProducts.length > 0 && isFlashSaleActive) {
         flashGrid.innerHTML = '';
-        // Context: flash -> tombol beli muncul langsung
-        flashProducts.forEach(p => { flashGrid.innerHTML += generateProductHTML(p, 'flash'); });
+        flashProducts.forEach(p => { flashGrid.innerHTML += generateProductHTML(p); });
         flashSec.style.display = "block";
         startCountdown();
     } else {
@@ -315,13 +313,39 @@ function renderCustomer() {
 
     const searchQ = (document.getElementById('customer-search')?.value || '').trim().toLowerCase();
 
+    // -- LOGIKA GELEMBUNG WARNA KATEGORI --
     const catBox = document.getElementById('category-tabs');
     catBox.innerHTML = '';
-    categories.forEach(cat => {
+    
+    // Palet warna gradient untuk gelembung agar menarik
+    const bubbleColors = [
+        'linear-gradient(135deg, #f87171, #dc2626)', // Merah
+        'linear-gradient(135deg, #fbbf24, #d97706)', // Oren/Kuning
+        'linear-gradient(135deg, #34d399, #059669)', // Hijau
+        'linear-gradient(135deg, #60a5fa, #2563eb)', // Biru
+        'linear-gradient(135deg, #a78bfa, #7c3aed)', // Ungu
+        'linear-gradient(135deg, #f472b6, #db2777)'  // Pink
+    ];
+
+    categories.forEach((cat, index) => {
         const btn = document.createElement('button');
-        btn.className = `cat-btn ${cat === currentCategory ? 'active' : ''}`;
+        const bgColor = bubbleColors[index % bubbleColors.length];
+        
+        btn.className = `cat-btn`;
         btn.innerText = cat;
-        // Reset pilihan produk saat ganti tab agar tidak bingung
+        
+        // Logika warna: jika tab aktif, aplikasikan warna gelembung
+        if (cat === currentCategory) {
+            btn.classList.add('active');
+            btn.style.background = bgColor;
+            btn.style.color = "white";
+            btn.style.border = "none";
+            btn.style.boxShadow = "0 4px 12px rgba(0,0,0,0.2)";
+        } else {
+            btn.style.background = ""; // gunakan bawaan css
+            btn.style.color = "";
+        }
+        
         btn.onclick = () => { currentCategory = cat; currentOperator = null; selectedProductId = null; renderCustomer(); };
         catBox.appendChild(btn);
     });
@@ -336,7 +360,6 @@ function renderCustomer() {
         const btn = document.createElement('button');
         btn.className = `tab-btn ${op === currentOperator ? 'active' : ''}`;
         btn.innerText = op;
-        // Reset pilihan produk saat ganti operator
         btn.onclick = () => { currentOperator = op; selectedProductId = null; renderCustomer(); };
         tabBox.appendChild(btn);
     });
@@ -359,13 +382,12 @@ function renderCustomer() {
         return numA - numB;
     });
 
-    // Render grid reguler (tanpa tombol beli, hanya fungsi klik)
-    filtered.forEach(p => { grid.innerHTML += generateProductHTML(p, 'regular'); });
+    // Render grid reguler
+    filtered.forEach(p => { grid.innerHTML += generateProductHTML(p); });
     
     // Pertahankan visual class 'selected' jika produk yang dipilih masih dirender
     if (selectedProductId) {
-        const card = document.getElementById(`prod-card-${selectedProductId}`);
-        if (card) card.classList.add('selected');
+        document.querySelectorAll(`#prod-card-${selectedProductId}`).forEach(card => card.classList.add('selected'));
     }
 
     // Render Metode Pembayaran
@@ -402,7 +424,6 @@ function renderCustomer() {
 
     renderCustomerCarousel();
     
-    // ... [Bagian Contact Footer tetap sama] ...
     const contactSec = document.getElementById('customer-contact');
     let contactHtml = "";
     const hasCs = Object.values(storeData.cs).some(val => val.trim() !== "");
@@ -440,44 +461,43 @@ function renderCustomer() {
     }
 }
 
-// LOGIKA RENDER PRODUK BERDASARKAN CONTEXT (Trending, Flash Sale, atau Reguler)
-function generateProductHTML(p, context = 'regular') {
-    const descHtml = (p.description && p.description.trim() !== "") ? `<div class="product-desc">${p.description}</div>` : ``;
+// ------------------------------------------
+// FUNGSI POPUP DESKRIPSI
+// ------------------------------------------
+function showDesc(id) {
+    const p = storeData.products.find(item => item.id === id);
+    if (!p) return;
     
+    const modal = document.getElementById('legal-modal');
+    document.getElementById('modal-title').innerText = "Info: " + p.nominal;
+    document.getElementById('modal-body').innerHTML = p.description ? p.description.replace(/\n/g, '<br>') : "<i>Tidak ada deskripsi khusus untuk produk ini.</i>";
+    modal.style.display = 'flex';
+}
+
+// ------------------------------------------
+// LOGIKA RENDER PRODUK UNTUK SEMUA GRID
+// ------------------------------------------
+function generateProductHTML(p) {
     let badges = "";
     if (p.isFlashSale) badges += `<div class="badge-flash">⚡</div>`;
     if (p.isTrending) badges += `<div class="badge-trending">🔥</div>`;
 
-    if (context === 'regular') {
-        // Grid Reguler -> Kartu bisa di-klik untuk memilih (tidak ada tombol beli langsung)
-        return `
-            <div class="product-card" id="prod-card-${p.id}" onclick="selectProduct(${p.id})">
-                ${badges}
-                <div>
-                    <div class="product-nominal">${p.nominal}</div>
-                    ${descHtml}
-                </div>
-                <span class="product-price">Rp ${p.price.toLocaleString('id-ID')}</span>
-            </div>
-        `;
-    } else {
-        // Tab Trending / Flash Sale -> Tombol beli langsung tetap dipertahankan
-        const detailPesanan = p.description ? ` (${p.description})` : '';
-        const waMsg = `Halo Arta Fortuna, saya mau order cepat (Flash/Trending):\n\nKategori: ${p.category}\nProduk: ${p.operator} - ${p.nominal}${detailPesanan}\nHarga: Rp ${p.price.toLocaleString('id-ID')}\n\nMohon dibantu proses.`;
-        const waLink = `https://wa.me/${storeData.whatsapp}?text=${encodeURIComponent(waMsg)}`;
-        
-        return `
-            <div class="product-card">
-                ${badges}
-                <div>
-                    <div class="product-nominal">${p.nominal}</div>
-                    ${descHtml}
-                </div>
-                <span class="product-price">Rp ${p.price.toLocaleString('id-ID')}</span>
-                <a href="${waLink}" target="_blank" class="btn-buy"><i class="fa-brands fa-whatsapp"></i> Beli</a>
-            </div>
-        `;
+    // Tombol info hanya muncul JIKA ada deskripsinya
+    let infoBtn = "";
+    if (p.description && p.description.trim() !== "") {
+        infoBtn = `<button class="btn-info" onclick="event.stopPropagation(); showDesc(${p.id})" title="Lihat Deskripsi"><i class="fa-solid fa-exclamation"></i></button>`;
     }
+
+    return `
+        <div class="product-card" id="prod-card-${p.id}" onclick="selectProduct(${p.id})">
+            ${badges}
+            ${infoBtn}
+            <div>
+                <div class="product-nominal" style="margin-top: ${infoBtn ? '12px' : '0'};">${p.nominal}</div>
+            </div>
+            <span class="product-price">Rp ${p.price.toLocaleString('id-ID')}</span>
+        </div>
+    `;
 }
 
 function startCountdown() {
