@@ -53,24 +53,33 @@
 
         <div class="content-wrapper">
             <h2 style="font-size: 1.3rem; margin-bottom: 5px;">PRODUK & LAYANAN</h2>
-            <p class="subtitle">Pilih kategori dan produk yang Anda butuhkan di bawah ini.</p>
+            <p class="subtitle">Pilih kategori, produk, dan metode pembayaran di bawah ini.</p>
 
             <div class="contact-section" style="padding: 14px 16px; margin-bottom: 16px; border-radius: 12px;">
-                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                    <div style="flex: 1 1 260px;">
-                        <label for="customer-search" style="margin:0 0 6px; font-weight:700;">Cari Produk</label>
-                        <input id="customer-search" type="text" placeholder="Contoh: Telkomsel, 10.000, MLBB, pulsa..." oninput="renderCustomer()" />
-                    </div>
-                </div>
-            </div>
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        <div style="flex: 1 1 260px;">
+            <input id="customer-search" type="text" placeholder="Ketik nama produk, nominal, atau game..." oninput="renderCustomer()" style="margin-top: 5px; border: 2px solid var(--border); font-weight: 500;" />
+        </div>
+    </div>
+</div>
 
             <div class="category-tabs" id="category-tabs"></div>
             <div class="tabs" id="operator-tabs"></div>
+            
             <div class="product-grid" id="product-grid"></div>
+
+            <div id="checkout-section" style="margin-top: 25px; padding-top: 20px; border-top: 1px dashed var(--border);">
+                <h2 style="font-size: 1.1rem; margin-bottom: 10px;">METODE PEMBAYARAN</h2>
+                <p class="subtitle" style="margin-bottom:10px;">Pilih cara pembayaran yang Anda inginkan:</p>
+                <div id="payment-grid" class="payment-grid"></div>
+                
+                <div style="text-align: center; margin-top: 25px;">
+                    <button onclick="processCheckout()" class="btn-checkout"><i class="fa-brands fa-whatsapp"></i> Konfirmasi Pesanan via WA</button>
+                </div>
+            </div>
         </div>
 
         <div class="content-wrapper">
-            
             <div id="customer-features-wrap" style="display:none;">
                 <div class="features-section" id="features-container"></div>
             </div>
@@ -83,7 +92,6 @@
             </div>
 
             <div class="contact-section" id="customer-contact" style="display: none; margin-top: 15px;"></div>
-
         </div>
     </main>
 
@@ -123,7 +131,7 @@
                         <label>Batas Waktu Flash Sale (Kosongkan jika tidak ada)</label>
                         <input type="datetime-local" id="admin-flash-end">
 
-                        <div class="banner-inputs">
+                        <div class="banner-inputs" style="margin-top:14px;">
                             <div class="help-text">Rasio banner yang presisi: <strong>16:5</strong></div>
                             <label>Slide 1</label> <input type="file" id="b-input-1" accept="image/*">
                             <label>Slide 2</label> <input type="file" id="b-input-2" accept="image/*">
@@ -146,6 +154,16 @@
                     </div>
 
                     <div class="admin-card">
+                        <h3>💳 Metode Pembayaran</h3>
+                        <div class="help-text" style="margin-bottom: 15px;">Tambahkan daftar E-Wallet atau Bank yang tersedia. Ini akan muncul di halaman checkout customer.</div>
+                        <div id="admin-payment-list" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px;"></div>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="new-payment-method" placeholder="Contoh: DANA, BCA, QRIS..." style="flex: 1;">
+                            <button onclick="addPaymentMethod()" class="btn-save" style="margin-top: 0; width: auto; white-space: nowrap;">Tambah Metode</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-card">
                         <h3>✨ Pengaturan Teks Fitur Unggulan</h3>
                         <label>Judul Utama</label>
                         <input type="text" id="feat-heading" placeholder="Contoh: ARTA FORTUNA : WEBSITE TOPUP TERPERCAYA">
@@ -162,7 +180,7 @@
                             <div><label>Keunggulan 6</label><input type="text" id="feat-t-6" placeholder="Judul 6"><textarea id="feat-d-6" rows="2" placeholder="Deskripsi 6" style="margin-top:4px;"></textarea></div>
                         </div>
                         
-                        <button onclick="saveGeneralSettings()" class="btn-save">Simpan Pengaturan</button>
+                        <button onclick="saveGeneralSettings()" class="btn-save">Simpan Pengaturan Utama</button>
                     </div>
                 </div>
 
@@ -217,7 +235,7 @@
                         <datalist id="list-category"></datalist>
 
                         <label>Sub-Kategori / Operator</label>
-                        <input type="text" id="prod-operator" placeholder="Contoh: Telkomsel, Mobile Legends...\" list="list-operator">
+                        <input type="text" id="prod-operator" placeholder="Contoh: Telkomsel, Mobile Legends..." list="list-operator">
                         <datalist id="list-operator"></datalist>
 
                         <label>Nominal / Nama Produk</label>
@@ -300,6 +318,6 @@
         <p>&copy; 2026 <strong>ARTA FORTUNA</strong>. Hak Cipta Dilindungi.</p>
     </footer>
 
-    <script src="script.js?v=2"></script>
+    <script src="script.js?v=3"></script>
 </body>
 </html>
