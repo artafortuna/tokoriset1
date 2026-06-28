@@ -121,9 +121,9 @@ body.dark-mode .btn-info { background: #334155; }
 .product-nominal { font-size: 0.9rem; font-weight: 800; margin-bottom: 4px; color: var(--text); pointer-events: none;}
 .product-desc { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 8px; line-height: 1.3; background: var(--bg); padding: 4px 8px; border-radius: 6px; display: inline-block; pointer-events: none;}
 
-/* --- PEMISAH NAMA & HARGA PRODUK (DASHED) --- */
+/* --- PEMISAH NAMA & HARGA PRODUK (SOLID) --- */
 .product-price { 
-    border-top: 1px dashed var(--border); 
+    border-top: 1px solid var(--border); 
     padding-top: 8px; 
     margin-top: auto; 
     width: 100%; 
@@ -160,7 +160,7 @@ body.dark-mode .btn-info { background: #334155; }
 .contact-icon-btn.email { background: linear-gradient(135deg, #ea4335, #c5221f); }
 .contact-icon-btn.x, .contact-icon-btn.tk { background: #111; }
 body.dark-mode .contact-icon-btn.x, body.dark-mode .contact-icon-btn.tk { background: #f8fafc; color: #111; }
-.contact-address { font-size: 0.8rem; color: var(--text-muted); padding-top: 15px; border-top: 1px dashed var(--border); line-height: 1.6; }
+.contact-address { font-size: 0.8rem; color: var(--text-muted); padding-top: 15px; border-top: 1px solid var(--border); line-height: 1.6; }
 
 /* --- ADMIN PANEL LAYOUT & KARTU --- */
 .admin-container { max-width: 1200px; margin: 20px auto 40px; padding: 0 5%; display: flex; gap: 20px; align-items: flex-start; }
