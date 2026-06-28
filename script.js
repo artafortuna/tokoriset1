@@ -1,4 +1,3 @@
-// Anda bisa menyimpan default link logo jika ingin, namun jika sudah upload lokal akan tergantikan.
 const APP_LOGO = "https://raw.githubusercontent.com/artafortuna/website1/main/1779374078922.png";
 
 let storeData = {
@@ -113,9 +112,9 @@ function setCustomerOnlyVisibility(isCustomerMode) {
 
     if (promoWrap) promoWrap.style.display = isCustomerMode ? 'block' : 'none';
     
+    // Perbaikan: Selalu tampilkan asalkan di mode customer
     if (featuresWrap) {
-        const hasFeatTitle = storeData.features && storeData.features.heading;
-        featuresWrap.style.display = (isCustomerMode && hasFeatTitle) ? 'block' : 'none';
+        featuresWrap.style.display = isCustomerMode ? 'block' : 'none';
     }
     
     if (custCarouselWrap) {
@@ -129,13 +128,19 @@ async function init() {
         await initDB();
         const saved = await loadFromDB();
         if (saved) {
+            let defaultFeatures = { ...storeData.features };
             storeData = { ...storeData, ...saved };
             storeData.cs = { ...{ wa: "", tele: "", ig: "", x: "", tk: "", fb: "", email: "", address: "" }, ...(saved.cs || {}) };
             storeData.soc = { ...{ wa: "", tele: "", ig: "", x: "", tk: "", fb: "" }, ...(saved.soc || {}) };
             storeData.legal = { ...storeData.legal, ...(saved.legal || {}) };
-            storeData.features = { ...storeData.features, ...(saved.features || {}) };
-            storeData.customerCarousel = normalizeCustomerCarousel(saved.customerCarousel);
+            
+            // Perbaikan: Mencegah kehilangan struktur data fitur unggulan saat loading
+            storeData.features = saved.features ? { ...defaultFeatures, ...saved.features } : defaultFeatures;
+            if (!storeData.features.items || storeData.features.items.length === 0) {
+                storeData.features.items = defaultFeatures.items;
+            }
 
+            storeData.customerCarousel = normalizeCustomerCarousel(saved.customerCarousel);
             storeData.products = (saved.products || []).map(p => {
                 if (!p.category) p.category = "Pulsa";
                 return p;
@@ -193,7 +198,6 @@ function renderCustomer() {
     const logoImg = document.getElementById('header-logo');
     const headerText = document.getElementById('header-text');
 
-    // 1. RENDER LOGO (Prioritaskan logo lokal, lalu default)
     headerText.style.animation = 'none';
     setTimeout(() => { headerText.style.animation = ''; }, 10);
 
@@ -210,7 +214,6 @@ function renderCustomer() {
         headerText.innerText = '⚡ ARTA FORTUNA';
     }
 
-    // 2. RENDER FAVICON DARI LOKAL
     if (storeData.faviconUrl && storeData.faviconUrl.trim() !== "") {
         const favIcon = document.getElementById('dynamic-favicon');
         if (favIcon) favIcon.href = storeData.faviconUrl;
@@ -310,20 +313,23 @@ function renderCustomer() {
 
     filtered.forEach(p => { grid.innerHTML += generateProductHTML(p); });
 
-    // Render Fitur Unggulan
+    // Perbaikan Render Fitur Unggulan
     const featContainer = document.getElementById('features-container');
-    if (featContainer && storeData.features && storeData.features.heading) {
+    if (featContainer && storeData.features && storeData.features.items) {
         let itemsHtml = storeData.features.items.map(item => `
             <div class="feature-card">
                 <i class="${item.icon} feature-icon"></i>
-                <h3>${item.title}</h3>
-                <p>${item.desc}</p>
+                <h3>${item.title || ''}</h3>
+                <p>${item.desc || ''}</p>
             </div>
         `).join('');
 
+        let headingHtml = storeData.features.heading ? `<h2 class="features-heading">${storeData.features.heading}</h2>` : "";
+        let descHtml = storeData.features.desc ? `<p class="features-desc">${storeData.features.desc}</p>` : "";
+
         featContainer.innerHTML = `
-            <h2 class="features-heading">${storeData.features.heading}</h2>
-            <p class="features-desc">${storeData.features.desc}</p>
+            ${headingHtml}
+            ${descHtml}
             <div class="features-grid">
                 ${itemsHtml}
             </div>
@@ -332,7 +338,6 @@ function renderCustomer() {
 
     renderCustomerCarousel();
 
-    // RENDER CS & SOSMED BARU (HANYA IKON BENTUK BULAT)
     const contactSec = document.getElementById('customer-contact');
     let contactHtml = "";
 
@@ -340,11 +345,7 @@ function renderCustomer() {
     const hasSoc = Object.values(storeData.soc).some(val => val.trim() !== "");
 
     if (hasCs || hasSoc) {
-        contactHtml += `
-            <div style="display:flex; flex-direction:column; gap:20px;">
-        `;
-        
-        // Blok CS
+        contactHtml += `<div style="display:flex; flex-direction:column; gap:20px;">`;
         if (hasCs) {
             contactHtml += `<div><h3>Hubungi Layanan CS Kami</h3><div class="contact-icon-grid">`;
             if (storeData.cs.wa) contactHtml += `<a href="${formatLink(storeData.cs.wa)}" target="_blank" class="contact-icon-btn wa" title="WhatsApp CS"><i class="fa-brands fa-whatsapp"></i></a>`;
@@ -357,7 +358,6 @@ function renderCustomer() {
             contactHtml += `</div></div>`;
         }
 
-        // Blok Sosmed
         if (hasSoc) {
             contactHtml += `<div><h3>Ikuti Sosial Media Kami</h3><div class="contact-icon-grid">`;
             if (storeData.soc.wa) contactHtml += `<a href="${formatLink(storeData.soc.wa)}" target="_blank" class="contact-icon-btn wa" title="WhatsApp Sosmed"><i class="fa-brands fa-whatsapp"></i></a>`;
@@ -368,7 +368,6 @@ function renderCustomer() {
             if (storeData.soc.fb) contactHtml += `<a href="${formatLink(storeData.soc.fb)}" target="_blank" class="contact-icon-btn fb" title="Facebook Sosmed"><i class="fa-brands fa-facebook-f"></i></a>`;
             contactHtml += `</div></div>`;
         }
-
         contactHtml += `</div>`;
 
         if (storeData.cs.address) {
@@ -474,14 +473,13 @@ function populateAdmin() {
     document.getElementById('admin-marquee').value = storeData.marquee;
     document.getElementById('admin-flash-end').value = storeData.flashSaleEnd;
     
-    // Fitur Unggulan
     if (storeData.features) {
         document.getElementById('feat-heading').value = storeData.features.heading || "";
         document.getElementById('feat-desc').value = storeData.features.desc || "";
         for(let i = 0; i < 6; i++) {
             if (storeData.features.items[i]) {
-                document.getElementById(`feat-t-${i+1}`).value = storeData.features.items[i].title;
-                document.getElementById(`feat-d-${i+1}`).value = storeData.features.items[i].desc;
+                document.getElementById(`feat-t-${i+1}`).value = storeData.features.items[i].title || "";
+                document.getElementById(`feat-d-${i+1}`).value = storeData.features.items[i].desc || "";
             }
         }
     }
@@ -528,7 +526,6 @@ function populateDatalists() {
 }
 
 async function saveGeneralSettings() {
-    // 1. Simpan Logo & Favicon
     const logoInput = document.getElementById('admin-logo');
     if (logoInput && logoInput.files && logoInput.files[0]) {
         storeData.logoUrl = await toBase64(logoInput.files[0]);
@@ -539,12 +536,10 @@ async function saveGeneralSettings() {
         storeData.faviconUrl = await toBase64(favInput.files[0]);
     }
 
-    // 2. Simpan Pengaturan Lainnya
     storeData.whatsapp = document.getElementById('admin-wa').value;
     storeData.marquee = document.getElementById('admin-marquee').value;
     storeData.flashSaleEnd = document.getElementById('admin-flash-end').value;
 
-    // Simpan Fitur Unggulan
     storeData.features.heading = document.getElementById('feat-heading').value;
     storeData.features.desc = document.getElementById('feat-desc').value;
     for(let i = 0; i < 6; i++) {
@@ -653,7 +648,6 @@ function renderAdminList() {
         if (p.isTrending) badgesHtml += `<span style="background:#ea580c;color:white;padding:2px 5px;border-radius:4px;font-size:0.6rem;">Trending</span>`;
         if (p.isFlashSale) badgesHtml += `<span style="background:#ef4444;color:white;padding:2px 5px;border-radius:4px;font-size:0.6rem;margin-top:3px;">Flash</span>`;
 
-        // Kolom HARGA dipindah sebelum DESKRIPSI
         list.innerHTML += `
             <div class="product-item ${statusClass}">
                 <span><strong>${p.category}</strong><small style="color:var(--text-muted); display:block; margin-top:3px;">${p.operator}</small></span>
