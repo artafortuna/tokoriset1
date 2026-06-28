@@ -265,25 +265,30 @@ function renderCustomer() {
         if (favIcon) favIcon.href = storeData.faviconUrl;
     }
 
-    document.getElementById('promo-marquee').innerText = storeData.marquee;
+    const promoMarquee = document.getElementById('promo-marquee');
+    if (promoMarquee) promoMarquee.innerText = storeData.marquee;
 
     const slider = document.getElementById('banner-slider');
-    slider.innerHTML = '';
-    storeData.banners.forEach((src, idx) => {
-        slider.innerHTML += `<img src="${src}" class="banner-slide ${idx === 0 ? 'active' : ''}">`;
-    });
-    startSlider();
+    if (slider) {
+        slider.innerHTML = '';
+        storeData.banners.forEach((src, idx) => {
+            slider.innerHTML += `<img src="${src}" class="banner-slide ${idx === 0 ? 'active' : ''}">`;
+        });
+        startSlider();
+    }
 
     const trendingSec = document.getElementById('trending-section');
     const trendingGrid = document.getElementById('trending-product-grid');
     const trendingProducts = storeData.products.filter(p => p.isActive !== false && p.isTrending);
 
-    if (trendingProducts.length > 0) {
-        trendingGrid.innerHTML = '';
-        trendingProducts.forEach(p => { trendingGrid.innerHTML += generateProductHTML(p); });
-        trendingSec.style.display = "block";
-    } else {
-        trendingSec.style.display = "none";
+    if (trendingSec && trendingGrid) {
+        if (trendingProducts.length > 0) {
+            trendingGrid.innerHTML = '';
+            trendingProducts.forEach(p => { trendingGrid.innerHTML += generateProductHTML(p, 'trending'); });
+            trendingSec.style.display = "block";
+        } else {
+            trendingSec.style.display = "none";
+        }
     }
 
     const flashSec = document.getElementById('flash-sale-section');
@@ -297,108 +302,117 @@ function renderCustomer() {
         if (end - now > 0) { isFlashSaleActive = true; }
     }
 
-    if (flashProducts.length > 0 && isFlashSaleActive) {
-        flashGrid.innerHTML = '';
-        flashProducts.forEach(p => { flashGrid.innerHTML += generateProductHTML(p); });
-        flashSec.style.display = "block";
-        startCountdown();
-    } else {
-        flashSec.style.display = "none";
-        clearInterval(countdownInterval);
+    if (flashSec && flashGrid) {
+        if (flashProducts.length > 0 && isFlashSaleActive) {
+            flashGrid.innerHTML = '';
+            flashProducts.forEach(p => { flashGrid.innerHTML += generateProductHTML(p, 'flash'); });
+            flashSec.style.display = "block";
+            startCountdown();
+        } else {
+            flashSec.style.display = "none";
+            clearInterval(countdownInterval);
+        }
     }
 
     const activeProducts = storeData.products.filter(p => p.isActive !== false);
     const categories = [...new Set(activeProducts.map(p => p.category))];
     if (!categories.includes(currentCategory) && categories.length > 0) currentCategory = categories[0];
 
-    const searchQ = (document.getElementById('customer-search')?.value || '').trim().toLowerCase();
+    const searchInput = document.getElementById('customer-search');
+    const searchQ = (searchInput ? searchInput.value : '').trim().toLowerCase();
 
     // -- LOGIKA GELEMBUNG WARNA KATEGORI --
     const catBox = document.getElementById('category-tabs');
-    catBox.innerHTML = '';
-    
-    // Palet warna gradient untuk gelembung agar menarik
-    const bubbleColors = [
-        'linear-gradient(135deg, #f87171, #dc2626)', // Merah
-        'linear-gradient(135deg, #fbbf24, #d97706)', // Oren/Kuning
-        'linear-gradient(135deg, #34d399, #059669)', // Hijau
-        'linear-gradient(135deg, #60a5fa, #2563eb)', // Biru
-        'linear-gradient(135deg, #a78bfa, #7c3aed)', // Ungu
-        'linear-gradient(135deg, #f472b6, #db2777)'  // Pink
-    ];
+    if (catBox) {
+        catBox.innerHTML = '';
+        const bubbleColors = [
+            'linear-gradient(135deg, #f87171, #dc2626)', 'linear-gradient(135deg, #fbbf24, #d97706)', 
+            'linear-gradient(135deg, #34d399, #059669)', 'linear-gradient(135deg, #60a5fa, #2563eb)', 
+            'linear-gradient(135deg, #a78bfa, #7c3aed)', 'linear-gradient(135deg, #f472b6, #db2777)'
+        ];
 
-    categories.forEach((cat, index) => {
-        const btn = document.createElement('button');
-        const bgColor = bubbleColors[index % bubbleColors.length];
-        
-        btn.className = `cat-btn`;
-        btn.innerText = cat;
-        
-        // Logika warna: jika tab aktif, aplikasikan warna gelembung
-        if (cat === currentCategory) {
-            btn.classList.add('active');
-            btn.style.background = bgColor;
-            btn.style.color = "white";
-            btn.style.border = "none";
-            btn.style.boxShadow = "0 4px 12px rgba(0,0,0,0.2)";
-        } else {
-            btn.style.background = ""; // gunakan bawaan css
-            btn.style.color = "";
-        }
-        
-        btn.onclick = () => { currentCategory = cat; currentOperator = null; selectedProductId = null; renderCustomer(); };
-        catBox.appendChild(btn);
-    });
+        categories.forEach((cat, index) => {
+            const btn = document.createElement('button');
+            const bgColor = bubbleColors[index % bubbleColors.length];
+            btn.className = `cat-btn`;
+            btn.innerText = cat;
+            if (cat === currentCategory) {
+                btn.classList.add('active');
+                btn.style.background = bgColor;
+                btn.style.color = "white";
+                btn.style.border = "none";
+                btn.style.boxShadow = "0 4px 12px rgba(0,0,0,0.2)";
+            } else {
+                btn.style.background = ""; btn.style.color = "";
+            }
+            btn.onclick = () => { currentCategory = cat; currentOperator = null; selectedProductId = null; renderCustomer(); };
+            catBox.appendChild(btn);
+        });
+    }
 
     const catProductsAll = activeProducts.filter(p => p.category === currentCategory);
     const operators = [...new Set(catProductsAll.map(p => p.operator))];
     if (!operators.includes(currentOperator) && operators.length > 0) currentOperator = operators[0];
 
     const tabBox = document.getElementById('operator-tabs');
-    tabBox.innerHTML = '';
-    operators.forEach(op => {
-        const btn = document.createElement('button');
-        btn.className = `tab-btn ${op === currentOperator ? 'active' : ''}`;
-        btn.innerText = op;
-        btn.onclick = () => { currentOperator = op; selectedProductId = null; renderCustomer(); };
-        tabBox.appendChild(btn);
-    });
-
-    const grid = document.getElementById('product-grid');
-    grid.innerHTML = '';
-
-    let filtered = catProductsAll.filter(p => p.operator === currentOperator);
-
-    if (searchQ) {
-        filtered = filtered.filter(p => {
-            const hay = [ p.category, p.operator, p.nominal, p.description || '', String(p.price ?? '') ].join(' ').toLowerCase();
-            return hay.includes(searchQ);
+    if (tabBox) {
+        tabBox.innerHTML = '';
+        operators.forEach(op => {
+            const btn = document.createElement('button');
+            btn.className = `tab-btn ${op === currentOperator ? 'active' : ''}`;
+            btn.innerText = op;
+            btn.onclick = () => { currentOperator = op; selectedProductId = null; renderCustomer(); };
+            tabBox.appendChild(btn);
         });
     }
 
-    filtered.sort((a, b) => {
-        let numA = parseInt(a.nominal.replace(/\D/g, '')) || 0;
-        let numB = parseInt(b.nominal.replace(/\D/g, '')) || 0;
-        return numA - numB;
-    });
+    const grid = document.getElementById('product-grid');
+    if (grid) {
+        grid.innerHTML = '';
+        let filtered = catProductsAll.filter(p => p.operator === currentOperator);
+        if (searchQ) {
+            filtered = filtered.filter(p => {
+                const hay = [ p.category, p.operator, p.nominal, p.description || '', String(p.price ?? '') ].join(' ').toLowerCase();
+                return hay.includes(searchQ);
+            });
+        }
+        filtered.sort((a, b) => {
+            let numA = parseInt(a.nominal.replace(/\D/g, '')) || 0;
+            let numB = parseInt(b.nominal.replace(/\D/g, '')) || 0;
+            return numA - numB;
+        });
 
-    // Render grid reguler
-    filtered.forEach(p => { grid.innerHTML += generateProductHTML(p); });
+        filtered.forEach(p => { grid.innerHTML += generateProductHTML(p, 'regular'); });
+        
+        if (selectedProductId) {
+            document.querySelectorAll(`#prod-card-${selectedProductId}`).forEach(card => card.classList.add('selected'));
+        }
+    }
+
+    // ============================================================
+    // SEKSI METODE PEMBAYARAN (DENGAN PELINDUNG ANTI-CRASH)
+    // ============================================================
+    const checkoutSec = document.getElementById('checkout-section');
+    const paymentGrid = document.getElementById('payment-methods-grid');
     
-    // Pertahankan visual class 'selected' jika produk yang dipilih masih dirender
-    if (selectedProductId) {
-        document.querySelectorAll(`#prod-card-${selectedProductId}`).forEach(card => card.classList.add('selected'));
+    if (activeProducts.length > 0 && storeData.paymentMethods && storeData.paymentMethods.length > 0) {
+        if (paymentGrid) {
+            paymentGrid.innerHTML = '';
+            storeData.paymentMethods.forEach(pm => {
+                let isSel = (pm === selectedPaymentMethod) ? 'selected' : '';
+                let safeId = pm.replace(/\s+/g, '-');
+                paymentGrid.innerHTML += `
+                    <div id="pay-${safeId}" class="payment-card ${isSel}" onclick="selectPayment('${pm}')">
+                        ${pm}
+                    </div>
+                `;
+            });
+        }
+        if (checkoutSec) checkoutSec.style.display = 'block';
+    } else {
+        if (checkoutSec) checkoutSec.style.display = 'none';
     }
-
-    // Render Metode Pembayaran
-    const paymentGrid = document.getElementById('payment-grid');
-    if (paymentGrid) {
-        paymentGrid.innerHTML = storeData.paymentMethods.map(m => {
-            const safeId = m.replace(/[^a-zA-Z0-9]/g, '-');
-            const isSelected = selectedPaymentMethod === m ? 'selected' : '';
-            return `<div class="payment-card ${isSelected}" id="pay-card-${safeId}" onclick="selectPayment('${m}')">${m}</div>`;
-        }).join('');
-    }
+    // ============================================================
 
     const featContainer = document.getElementById('features-container');
     if (featContainer && storeData.features && storeData.features.items) {
@@ -425,39 +439,41 @@ function renderCustomer() {
     renderCustomerCarousel();
     
     const contactSec = document.getElementById('customer-contact');
-    let contactHtml = "";
-    const hasCs = Object.values(storeData.cs).some(val => val.trim() !== "");
-    const hasSoc = Object.values(storeData.soc).some(val => val.trim() !== "");
+    if (contactSec) {
+        let contactHtml = "";
+        const hasCs = Object.values(storeData.cs).some(val => val.trim() !== "");
+        const hasSoc = Object.values(storeData.soc).some(val => val.trim() !== "");
 
-    if (hasCs || hasSoc) {
-        contactHtml += `<div style="display:flex; flex-direction:column; gap:20px;">`;
-        if (hasCs) {
-            contactHtml += `<div><h3>Hubungi Layanan CS Kami</h3><div class="contact-icon-grid">`;
-            if (storeData.cs.wa) contactHtml += `<a href="${formatLink(storeData.cs.wa)}" target="_blank" class="contact-icon-btn wa"><i class="fa-brands fa-whatsapp"></i></a>`;
-            if (storeData.cs.tele) contactHtml += `<a href="${formatLink(storeData.cs.tele, 'tele')}" target="_blank" class="contact-icon-btn tele"><i class="fa-brands fa-telegram"></i></a>`;
-            if (storeData.cs.ig) contactHtml += `<a href="${formatLink(storeData.cs.ig, 'ig')}" target="_blank" class="contact-icon-btn ig"><i class="fa-brands fa-instagram"></i></a>`;
-            if (storeData.cs.x) contactHtml += `<a href="${formatLink(storeData.cs.x, 'x')}" target="_blank" class="contact-icon-btn x"><i class="fa-brands fa-x-twitter"></i></a>`;
-            if (storeData.cs.tk) contactHtml += `<a href="${formatLink(storeData.cs.tk, 'tk')}" target="_blank" class="contact-icon-btn tk"><i class="fa-brands fa-tiktok"></i></a>`;
-            if (storeData.cs.fb) contactHtml += `<a href="${formatLink(storeData.cs.fb)}" target="_blank" class="contact-icon-btn fb"><i class="fa-brands fa-facebook-f"></i></a>`;
-            if (storeData.cs.email) contactHtml += `<a href="mailto:${storeData.cs.email}" target="_blank" class="contact-icon-btn email"><i class="fa-solid fa-envelope"></i></a>`;
-            contactHtml += `</div></div>`;
+        if (hasCs || hasSoc) {
+            contactHtml += `<div style="display:flex; flex-direction:column; gap:20px;">`;
+            if (hasCs) {
+                contactHtml += `<div><h3>Hubungi Layanan CS Kami</h3><div class="contact-icon-grid">`;
+                if (storeData.cs.wa) contactHtml += `<a href="${formatLink(storeData.cs.wa)}" target="_blank" class="contact-icon-btn wa"><i class="fa-brands fa-whatsapp"></i></a>`;
+                if (storeData.cs.tele) contactHtml += `<a href="${formatLink(storeData.cs.tele, 'tele')}" target="_blank" class="contact-icon-btn tele"><i class="fa-brands fa-telegram"></i></a>`;
+                if (storeData.cs.ig) contactHtml += `<a href="${formatLink(storeData.cs.ig, 'ig')}" target="_blank" class="contact-icon-btn ig"><i class="fa-brands fa-instagram"></i></a>`;
+                if (storeData.cs.x) contactHtml += `<a href="${formatLink(storeData.cs.x, 'x')}" target="_blank" class="contact-icon-btn x"><i class="fa-brands fa-x-twitter"></i></a>`;
+                if (storeData.cs.tk) contactHtml += `<a href="${formatLink(storeData.cs.tk, 'tk')}" target="_blank" class="contact-icon-btn tk"><i class="fa-brands fa-tiktok"></i></a>`;
+                if (storeData.cs.fb) contactHtml += `<a href="${formatLink(storeData.cs.fb)}" target="_blank" class="contact-icon-btn fb"><i class="fa-brands fa-facebook-f"></i></a>`;
+                if (storeData.cs.email) contactHtml += `<a href="mailto:${storeData.cs.email}" target="_blank" class="contact-icon-btn email"><i class="fa-solid fa-envelope"></i></a>`;
+                contactHtml += `</div></div>`;
+            }
+            if (hasSoc) {
+                contactHtml += `<div><h3>Ikuti Sosial Media Kami</h3><div class="contact-icon-grid">`;
+                if (storeData.soc.wa) contactHtml += `<a href="${formatLink(storeData.soc.wa)}" target="_blank" class="contact-icon-btn wa"><i class="fa-brands fa-whatsapp"></i></a>`;
+                if (storeData.soc.tele) contactHtml += `<a href="${formatLink(storeData.soc.tele, 'tele')}" target="_blank" class="contact-icon-btn tele"><i class="fa-brands fa-telegram"></i></a>`;
+                if (storeData.soc.ig) contactHtml += `<a href="${formatLink(storeData.soc.ig, 'ig')}" target="_blank" class="contact-icon-btn ig"><i class="fa-brands fa-instagram"></i></a>`;
+                if (storeData.soc.x) contactHtml += `<a href="${formatLink(storeData.soc.x, 'x')}" target="_blank" class="contact-icon-btn x"><i class="fa-brands fa-x-twitter"></i></a>`;
+                if (storeData.soc.tk) contactHtml += `<a href="${formatLink(storeData.soc.tk, 'tk')}" target="_blank" class="contact-icon-btn tk"><i class="fa-brands fa-tiktok"></i></a>`;
+                if (storeData.soc.fb) contactHtml += `<a href="${formatLink(storeData.soc.fb)}" target="_blank" class="contact-icon-btn fb"><i class="fa-brands fa-facebook-f"></i></a>`;
+                contactHtml += `</div></div>`;
+            }
+            contactHtml += `</div>`;
+            if (storeData.cs.address) { contactHtml += `<div class="contact-address"><i class="fa-solid fa-location-dot" style="color:var(--primary); margin-right:5px;"></i> ${storeData.cs.address}</div>`; }
+            contactSec.innerHTML = contactHtml;
+            contactSec.style.display = "block";
+        } else {
+            contactSec.style.display = "none";
         }
-        if (hasSoc) {
-            contactHtml += `<div><h3>Ikuti Sosial Media Kami</h3><div class="contact-icon-grid">`;
-            if (storeData.soc.wa) contactHtml += `<a href="${formatLink(storeData.soc.wa)}" target="_blank" class="contact-icon-btn wa"><i class="fa-brands fa-whatsapp"></i></a>`;
-            if (storeData.soc.tele) contactHtml += `<a href="${formatLink(storeData.soc.tele, 'tele')}" target="_blank" class="contact-icon-btn tele"><i class="fa-brands fa-telegram"></i></a>`;
-            if (storeData.soc.ig) contactHtml += `<a href="${formatLink(storeData.soc.ig, 'ig')}" target="_blank" class="contact-icon-btn ig"><i class="fa-brands fa-instagram"></i></a>`;
-            if (storeData.soc.x) contactHtml += `<a href="${formatLink(storeData.soc.x, 'x')}" target="_blank" class="contact-icon-btn x"><i class="fa-brands fa-x-twitter"></i></a>`;
-            if (storeData.soc.tk) contactHtml += `<a href="${formatLink(storeData.soc.tk, 'tk')}" target="_blank" class="contact-icon-btn tk"><i class="fa-brands fa-tiktok"></i></a>`;
-            if (storeData.soc.fb) contactHtml += `<a href="${formatLink(storeData.soc.fb)}" target="_blank" class="contact-icon-btn fb"><i class="fa-brands fa-facebook-f"></i></a>`;
-            contactHtml += `</div></div>`;
-        }
-        contactHtml += `</div>`;
-        if (storeData.cs.address) { contactHtml += `<div class="contact-address"><i class="fa-solid fa-location-dot" style="color:var(--primary); margin-right:5px;"></i> ${storeData.cs.address}</div>`; }
-        contactSec.innerHTML = contactHtml;
-        contactSec.style.display = "block";
-    } else {
-        contactSec.style.display = "none";
     }
 }
 
