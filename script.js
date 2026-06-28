@@ -95,10 +95,15 @@ function renderCustomerCarousel() {
 function setCustomerOnlyVisibility(isCustomerMode) {
     const promoWrap = document.getElementById('promo-marquee-container');
     const custCarouselWrap = document.getElementById('customer-carousel-wrap');
+    
+    // PERBAIKAN: Deteksi container fitur unggulan
+    const featuresWrap = document.getElementById('customer-features-wrap'); 
 
     if (promoWrap) promoWrap.style.display = isCustomerMode ? 'block' : 'none';
     
-    // PERBAIKAN: Pastikan carousel hanya muncul saat mode customer DAN ada fotonya
+    // Tampilkan fitur unggulan hanya di mode customer
+    if (featuresWrap) featuresWrap.style.display = isCustomerMode ? 'block' : 'none'; 
+    
     if (custCarouselWrap) {
         const items = (storeData.customerCarousel || []).filter(Boolean);
         custCarouselWrap.style.display = (isCustomerMode && items.length > 0) ? 'block' : 'none';
