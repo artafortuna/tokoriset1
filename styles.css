@@ -211,3 +211,78 @@ textarea { resize: vertical; min-height: 60px; }
 .footer-links { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; opacity: 0.9; }
 .footer-links a { color: white; text-decoration: none; cursor: pointer; font-weight: 600; }
 .footer-links a:hover { text-decoration: underline; }
+
+/* --- TAMBAHAN STYLE UNTUK CHECKOUT & PEMBAYARAN --- */
+.product-card {
+    cursor: pointer;
+}
+.product-card.selected {
+    border: 2px solid var(--primary);
+    background: var(--primary-light);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2);
+}
+body.dark-mode .product-card.selected {
+    background: rgba(16, 185, 129, 0.15);
+}
+.payment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 12px;
+}
+.payment-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 12px 10px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+    user-select: none;
+}
+.payment-card:hover {
+    border-color: var(--primary);
+    color: var(--text);
+}
+.payment-card.selected {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+    transform: scale(1.05);
+}
+.btn-checkout {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 30px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+    width: 100%;
+    max-width: 400px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.btn-checkout:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    background: linear-gradient(135deg, var(--primary-hover), var(--primary-dark));
+}
+.payment-admin-item {
+    background: var(--bg);
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
