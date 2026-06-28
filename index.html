@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARTA FORTUNA - Top Up Tepercaya</title>
+    <link id="dynamic-favicon" rel="icon" href="">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
@@ -71,43 +72,7 @@
         <div class="content-wrapper">
             
             <div id="customer-features-wrap" style="display:none;">
-                <div class="features-section">
-                    <h2 class="features-heading">ARTA FORTUNA : WEBSITE TOPUP GAME & VOUCHER TEPERCAYA DI INDONESIA</h2>
-                    <p class="features-desc">Setiap harinya, ribuan gamers di Indonesia menggunakan ARTA FORTUNA untuk melakukan topup game dengan cepat dan lancar, tanpa perlu daftar atau login, dan token game akan dikirimkan secara instan ke akun game tujuan. Top up game PUBG Mobile, Mobile Legends, Free Fire, CODM, Roblox dan berbagai macam game lainnya.</p>
-                    
-                    <div class="features-grid">
-                        <div class="feature-card">
-                            <i class="fa-solid fa-check-double feature-icon"></i>
-                            <h3>Jujur & Tepercaya</h3>
-                            <p>Setiap hari ada ribuan transaksi topup game atau pembelian voucher yang dilakukan oleh pelanggan kami.</p>
-                        </div>
-                        <div class="feature-card">
-                            <i class="fa-solid fa-bolt feature-icon"></i>
-                            <h3>Pengiriman Instan</h3>
-                            <p>Hanya butuh beberapa detik saja untuk menyelesaikan transaksi Anda. Semua proses kami berjalan secara otomatis.</p>
-                        </div>
-                        <div class="feature-card">
-                            <i class="fa-solid fa-percent feature-icon"></i>
-                            <h3>Promosi-promosi Menarik</h3>
-                            <p>Dapatkan promo harga terbaik yang bisa Anda nikmati.</p>
-                        </div>
-                        <div class="feature-card">
-                            <i class="fa-solid fa-wallet feature-icon"></i>
-                            <h3>Metode Pembayaran Lengkap</h3>
-                            <p>Kami menawarkan begitu banyak pilihan metode pembayaran, mulai dari transfer bank, GoPay, ShopeePay, DANA, dan lainnya.</p>
-                        </div>
-                        <div class="feature-card">
-                            <i class="fa-solid fa-thumbs-up feature-icon"></i>
-                            <h3>Pasti Lebih Murah</h3>
-                            <p>Top up game favorit Anda dengan harga yang pastinya lebih murah dibandingkan website topup lainnya.</p>
-                        </div>
-                        <div class="feature-card">
-                            <i class="fa-brands fa-whatsapp feature-icon"></i>
-                            <h3>Layanan Pelanggan via WhatsApp</h3>
-                            <p>Customer Support kami siap membantu Anda setiap hari dalam 24 jam, 7 hari dalam seminggu dan 30 hari dalam sebulan.</p>
-                        </div>
-                    </div>
-                </div>
+                <div class="features-section" id="features-container"></div>
             </div>
 
             <div class="customer-carousel-wrap" id="customer-carousel-wrap" style="display:none;">
@@ -117,7 +82,7 @@
                 </div>
             </div>
 
-            <div class="contact-section" id="customer-contact" style="display: none; margin-top: 25px;"></div>
+            <div class="contact-section" id="customer-contact" style="display: none; margin-top: 15px;"></div>
 
         </div>
     </main>
@@ -138,6 +103,15 @@
             <div class="admin-content">
 
                 <div id="admin-pengaturan" class="admin-page active">
+                    
+                    <div class="admin-card">
+                        <h3>🎨 Logo & Favicon Toko</h3>
+                        <div class="grid-inputs">
+                            <div><label>Upload Logo (Rekomendasi Transparan)</label><input type="file" id="admin-logo" accept="image/*"></div>
+                            <div><label>Upload Favicon (Ikon Tab Browser)</label><input type="file" id="admin-favicon" accept="image/*"></div>
+                        </div>
+                    </div>
+
                     <div class="admin-card">
                         <h3>Pengaturan Umum, Banner & Flash Sale</h3>
                         <label>Nomor WhatsApp Pembelian (Utama)</label>
@@ -159,11 +133,7 @@
                         </div>
 
                         <div class="banner-inputs" style="margin-top:14px;">
-                            <div class="help-text">
-                                Carousel Customer (8 gambar lokal).
-                                Otomatis horizontal, 30 detik/putaran.
-                                Item 130x70, radius kartu 12px, radius gambar 8px.
-                            </div>
+                            <div class="help-text">Carousel Customer (8 gambar lokal). Otomatis horizontal, 60 detik/putaran.</div>
                             <label>Carousel 1</label> <input type="file" id="c-input-1" accept="image/*">
                             <label>Carousel 2</label> <input type="file" id="c-input-2" accept="image/*">
                             <label>Carousel 3</label> <input type="file" id="c-input-3" accept="image/*">
@@ -173,7 +143,25 @@
                             <label>Carousel 7</label> <input type="file" id="c-input-7" accept="image/*">
                             <label>Carousel 8</label> <input type="file" id="c-input-8" accept="image/*">
                         </div>
+                    </div>
 
+                    <div class="admin-card">
+                        <h3>✨ Pengaturan Teks Fitur Unggulan</h3>
+                        <label>Judul Utama</label>
+                        <input type="text" id="feat-heading" placeholder="Contoh: ARTA FORTUNA : WEBSITE TOPUP TERPERCAYA">
+                        
+                        <label>Deskripsi Singkat</label>
+                        <textarea id="feat-desc" rows="2" placeholder="Setiap harinya, ribuan gamers..."></textarea>
+                        
+                        <div class="grid-inputs" style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border);">
+                            <div><label>Keunggulan 1</label><input type="text" id="feat-t-1" placeholder="Judul 1"><textarea id="feat-d-1" rows="2" placeholder="Deskripsi 1" style="margin-top:4px;"></textarea></div>
+                            <div><label>Keunggulan 2</label><input type="text" id="feat-t-2" placeholder="Judul 2"><textarea id="feat-d-2" rows="2" placeholder="Deskripsi 2" style="margin-top:4px;"></textarea></div>
+                            <div><label>Keunggulan 3</label><input type="text" id="feat-t-3" placeholder="Judul 3"><textarea id="feat-d-3" rows="2" placeholder="Deskripsi 3" style="margin-top:4px;"></textarea></div>
+                            <div><label>Keunggulan 4</label><input type="text" id="feat-t-4" placeholder="Judul 4"><textarea id="feat-d-4" rows="2" placeholder="Deskripsi 4" style="margin-top:4px;"></textarea></div>
+                            <div><label>Keunggulan 5</label><input type="text" id="feat-t-5" placeholder="Judul 5"><textarea id="feat-d-5" rows="2" placeholder="Deskripsi 5" style="margin-top:4px;"></textarea></div>
+                            <div><label>Keunggulan 6</label><input type="text" id="feat-t-6" placeholder="Judul 6"><textarea id="feat-d-6" rows="2" placeholder="Deskripsi 6" style="margin-top:4px;"></textarea></div>
+                        </div>
+                        
                         <button onclick="saveGeneralSettings()" class="btn-save">Simpan Pengaturan</button>
                     </div>
                 </div>
@@ -192,7 +180,6 @@
                             <div style="grid-column: 1 / -1;"><label>Alamat Toko Fisik (Opsional)</label><input type="text" id="cs-address" placeholder="Jl. Contoh No. 1, Kota..."></div>
                         </div>
                     </div>
-
                     <div class="admin-card">
                         <h3>🌐 Tautan Sosial Media Resmi (Opsional)</h3>
                         <div class="grid-inputs">
@@ -260,7 +247,6 @@
                     <div class="admin-card" style="margin-bottom: 0;">
                         <div class="admin-header-flex">
                             <h3>Daftar Produk Terinput</h3>
-
                             <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
                                 <div class="filter-group">
                                     <label style="margin:0 6px 0 0; font-weight:700;">Filter Kategori:</label>
@@ -268,7 +254,6 @@
                                         <option value="Semua">Semua Kategori</option>
                                     </select>
                                 </div>
-
                                 <div class="filter-group">
                                     <div>
                                         <label style="margin:0 0 6px;">Cari:</label>
@@ -282,8 +267,8 @@
                             <div class="product-list-header">
                                 <span>Kategori & Operator</span>
                                 <span>Nominal</span>
-                                <span>Deskripsi & Status</span>
                                 <span>Harga</span>
+                                <span>Deskripsi & Status</span>
                                 <span>Aksi</span>
                             </div>
                             <div id="admin-product-list"></div>
