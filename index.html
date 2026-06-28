@@ -67,19 +67,15 @@
             <div class="tabs" id="operator-tabs"></div>
             
             <div class="product-grid" id="product-grid"></div>
-
-            <div id="checkout-section" style="margin-top: 25px; padding-top: 20px; border-top: 1px dashed var(--border);">
-                <h2 style="font-size: 1.1rem; margin-bottom: 10px;">METODE PEMBAYARAN</h2>
-                <p class="subtitle" style="margin-bottom:10px;">Pilih cara pembayaran yang Anda inginkan:</p>
-                <div id="payment-grid" class="payment-grid"></div>
-                
-                <div style="text-align: center; margin-top: 25px;">
-                    <button onclick="processCheckout()" class="btn-checkout"><i class="fa-brands fa-whatsapp"></i> Konfirmasi Pesanan via WA</button>
-                </div>
+            <div id="checkout-section" class="checkout-section" style="display: none;">
+                <h3 style="margin-bottom: 15px; font-size: 1.15rem;">Pilih Metode Pembayaran</h3>
+                <div id="payment-methods-grid" class="payment-grid"></div>
+                <button class="btn-master-buy" onclick="processCheckout()">
+                    <i class="fa-brands fa-whatsapp"></i> Lanjutkan ke Pembayaran
+                </button>
             </div>
-        </div>
-
-        <div class="content-wrapper">
+            </div> <div class="content-wrapper">
+            
             <div id="customer-features-wrap" style="display:none;">
                 <div class="features-section" id="features-container"></div>
             </div>
