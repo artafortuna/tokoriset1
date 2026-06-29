@@ -406,17 +406,19 @@ textarea { resize: vertical; min-height: 60px; }
     box-shadow: 0 0 0 3px var(--primary-light);
 }
 /* --- TATA LETAK INPUT BERDAMPINGAN --- */
+/* --- TATA LETAK INPUT BERDAMPINGAN --- */
 .destination-input-group {
     display: flex;
-    gap: 10px;
+    gap: 8px; /* Jarak antar kotak sedikit dirapatkan agar estetik */
     width: 100%;
 }
 .destination-input.id-field {
-    flex: 3; /* Mengambil ruang 75% */
+    flex: 2; /* Mengambil ruang sekitar 65% (lebih seimbang) */
 }
 .destination-input.server-field {
-    flex: 1; /* Mengambil ruang 25% */
+    flex: 1; /* Mengambil ruang sekitar 35% agar teks muat */
     text-align: center;
+    padding: 14px 8px; /* Padding kiri-kanan dikurangi agar teks tidak terpotong */
 }
 
 body.dark-mode .destination-input:focus {
