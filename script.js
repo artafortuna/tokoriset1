@@ -164,6 +164,9 @@ function toggleTheme() {
     document.body.classList.toggle('dark-mode');
     const isDark = document.body.classList.contains('dark-mode');
     document.getElementById('theme-toggle').innerText = isDark ? '☀️' : '🌙';
+    
+    // Simpan pilihan tema ke memori browser
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
 }
 
 function toggleView() {
@@ -494,22 +497,26 @@ function showDesc(id) {
 // LOGIKA RENDER PRODUK UNTUK SEMUA GRID
 // ------------------------------------------
 function generateProductHTML(p) {
+    const descHtml = (p.description && p.description.trim() !== "") ? `<div class="product-desc">${p.description}</div>` : ``;
     let badges = "";
     if (p.isFlashSale) badges += `<div class="badge-flash">⚡</div>`;
     if (p.isTrending) badges += `<div class="badge-trending">🔥</div>`;
 
-    // Tombol info hanya muncul JIKA ada deskripsinya
     let infoBtn = "";
     if (p.description && p.description.trim() !== "") {
         infoBtn = `<button class="btn-info" onclick="event.stopPropagation(); showDesc(${p.id})" title="Lihat Deskripsi"><i class="fa-solid fa-exclamation"></i></button>`;
     }
 
+    // Semua produk sekarang menggunakan sistem 'klik untuk pilih', tidak ada lagi tombol beli langsung
+    let isSelected = (p.id === selectedProductId) ? 'selected' : '';
+    
     return `
-        <div class="product-card" id="prod-card-${p.id}" onclick="selectProduct(${p.id})">
+        <div class="product-card ${isSelected}" id="prod-card-${p.id}" onclick="selectProduct(${p.id})">
             ${badges}
             ${infoBtn}
-            <div>
-                <div class="product-nominal" style="margin-top: ${infoBtn ? '12px' : '0'};">${p.nominal}</div>
+            <div class="product-text-wrap">
+                <div class="product-nominal">${p.nominal}</div>
+                ${descHtml}
             </div>
             <span class="product-price">Rp ${p.price.toLocaleString('id-ID')}</span>
         </div>
@@ -877,3 +884,55 @@ const toBase64 = file => new Promise((resolve, reject) => {
 });
 
 init();
+
+// ==============================================
+// 1. FUNGSI PENCARIAN ANTI-LAG (DEBOUNCE)
+// ==============================================
+let searchTimeout;
+function handleSearch() {
+    clearTimeout(searchTimeout);
+    
+    // Beri jeda 300 milidetik setelah user berhenti mengetik agar keyboard HP tidak lag
+    searchTimeout = setTimeout(() => {
+        const searchQ = (document.getElementById('customer-search')?.value || '').trim().toLowerCase();
+        const grid = document.getElementById('product-grid');
+        if (!grid) return;
+        
+        const activeProducts = storeData.products.filter(p => p.isActive !== false);
+        const catProductsAll = activeProducts.filter(p => p.category === currentCategory);
+        let filtered = catProductsAll.filter(p => p.operator === currentOperator);
+
+        if (searchQ) {
+            filtered = filtered.filter(p => {
+                const hay = [ p.category, p.operator, p.nominal, p.description || '', String(p.price ?? '') ].join(' ').toLowerCase();
+                return hay.includes(searchQ);
+            });
+        }
+
+        filtered.sort((a, b) => {
+            let numA = parseInt(a.nominal.replace(/\D/g, '')) || 0;
+            let numB = parseInt(b.nominal.replace(/\D/g, '')) || 0;
+            return numA - numB;
+        });
+
+        // Hanya perbarui grid produk, tanpa merender ulang seluruh halaman
+        grid.innerHTML = '';
+        filtered.forEach(p => { grid.innerHTML += generateProductHTML(p, 'regular'); });
+        
+        if (selectedProductId) {
+            document.querySelectorAll(`#prod-card-${selectedProductId}`).forEach(card => card.classList.add('selected'));
+        }
+    }, 300); 
+}
+
+// ==============================================
+// 2. MEMUAT TEMA GELAP SECARA OTOMATIS
+// ==============================================
+function applySavedTheme() {
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+        const themeBtn = document.getElementById('theme-toggle');
+        if(themeBtn) themeBtn.innerText = '☀️';
+    }
+}
+applySavedTheme();
