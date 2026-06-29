@@ -207,19 +207,35 @@ function switchAdminPage(pageId, element) {
 // ------------------------------------------
 function selectProduct(id) {
     selectedProductId = id;
-    // Hapus kelas selected dari SEMUA kartu (Trending, Flash Sale, dan Reguler)
+    
+    // Hapus kelas selected dari SEMUA kartu
     document.querySelectorAll('.product-card').forEach(el => el.classList.remove('selected'));
     
-    // Tambahkan kelas selected (Bisa terpilih 2 tempat sekaligus jika produk ada di Flash Sale & Grid Reguler)
+    // Tambahkan kelas selected ke produk yang diklik
     document.querySelectorAll(`#prod-card-${id}`).forEach(card => card.classList.add('selected'));
+
+    // GULIR OTOMATIS (AUTO-SCROLL) KE METODE PEMBAYARAN
+    const checkoutSec = document.getElementById('checkout-section');
+    if (checkoutSec) {
+        // block: 'center' menempatkan bagian pembayaran tepat di tengah layar HP/Laptop
+        checkoutSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 }
 
 function selectPayment(method) {
     selectedPaymentMethod = method;
+    
+    // Hapus efek warna dari semua kotak pembayaran
     document.querySelectorAll('.payment-card').forEach(el => el.classList.remove('selected'));
-    const safeId = method.replace(/[^a-zA-Z0-9]/g, '-');
-    const pCard = document.getElementById(`pay-card-${safeId}`);
-    if (pCard) pCard.classList.add('selected');
+    
+    // Cari kotak yang diklik menggunakan format ID yang sama persis
+    const safeId = method.replace(/\s+/g, '-');
+    const pCard = document.getElementById(`pay-${safeId}`);
+    
+    // Nyalakan warnanya
+    if (pCard) {
+        pCard.classList.add('selected');
+    }
 }
 
 function processCheckout() {
@@ -227,6 +243,17 @@ function processCheckout() {
         alert("⚠️ Mohon pilih produk terlebih dahulu sebelum melanjutkan pembayaran.");
         return;
     }
+
+    // Ambil data dari kolom ID dan Server
+    const targetId = document.getElementById('customer-id-input').value.trim();
+    const targetServer = document.getElementById('customer-server-input').value.trim();
+    
+    if (!targetId) {
+        alert("⚠️ Mohon masukkan Nomor HP / ID Game / Link Tujuan terlebih dahulu!");
+        document.getElementById('customer-id-input').focus();
+        return;
+    }
+
     if (!selectedPaymentMethod) {
         alert("⚠️ Mohon pilih Metode Pembayaran yang ingin Anda gunakan.");
         return;
@@ -236,7 +263,11 @@ function processCheckout() {
     if (!p) return;
 
     const detailPesanan = p.description ? ` (${p.description})` : '';
-    const waMsg = `Halo Arta Fortuna, saya mau order:\n\n*Kategori:* ${p.category}\n*Produk:* ${p.operator} - ${p.nominal}${detailPesanan}\n*Harga:* Rp ${p.price.toLocaleString('id-ID')}\n*Metode Pembayaran:* ${selectedPaymentMethod}\n\nMohon proses pesanan saya. Terima kasih!`;
+    
+    // Format teks tujuan: Jika server diisi, gabungkan (misal: 12345678 (2104))
+    const formatTujuan = targetServer ? `${targetId} (${targetServer})` : targetId;
+
+    const waMsg = `Halo Arta Fortuna, saya mau order:\n\n*Kategori:* ${p.category}\n*Produk:* ${p.operator} - ${p.nominal}${detailPesanan}\n*Tujuan:* ${formatTujuan}\n*Harga:* Rp ${p.price.toLocaleString('id-ID')}\n*Metode Pembayaran:* ${selectedPaymentMethod}\n\nMohon proses pesanan saya. Terima kasih!`;
     const waLink = `https://wa.me/${storeData.whatsapp}?text=${encodeURIComponent(waMsg)}`;
     
     window.open(waLink, '_blank');
@@ -497,17 +528,16 @@ function showDesc(id) {
 // LOGIKA RENDER PRODUK UNTUK SEMUA GRID
 // ------------------------------------------
 function generateProductHTML(p) {
-    const descHtml = (p.description && p.description.trim() !== "") ? `<div class="product-desc">${p.description}</div>` : ``;
     let badges = "";
     if (p.isFlashSale) badges += `<div class="badge-flash">⚡</div>`;
     if (p.isTrending) badges += `<div class="badge-trending">🔥</div>`;
 
+    // Tombol info muncul jika ada deskripsi
     let infoBtn = "";
     if (p.description && p.description.trim() !== "") {
         infoBtn = `<button class="btn-info" onclick="event.stopPropagation(); showDesc(${p.id})" title="Lihat Deskripsi"><i class="fa-solid fa-exclamation"></i></button>`;
     }
 
-    // Semua produk sekarang menggunakan sistem 'klik untuk pilih', tidak ada lagi tombol beli langsung
     let isSelected = (p.id === selectedProductId) ? 'selected' : '';
     
     return `
@@ -516,8 +546,7 @@ function generateProductHTML(p) {
             ${infoBtn}
             <div class="product-text-wrap">
                 <div class="product-nominal">${p.nominal}</div>
-                ${descHtml}
-            </div>
+                </div>
             <span class="product-price">Rp ${p.price.toLocaleString('id-ID')}</span>
         </div>
     `;
