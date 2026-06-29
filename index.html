@@ -100,9 +100,14 @@
     </main>
 
     <main id="admin-view" style="display: none;">
+        <div id="admin-overlay" class="admin-overlay" onclick="toggleAdminMenu()"></div>
+
         <div class="admin-container">
-            <aside class="admin-sidebar">
-                <div class="sidebar-title">MENU ADMIN</div>
+            <aside class="admin-sidebar" id="admin-sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">MENU ADMIN</div>
+                    <button class="btn-close-sidebar" onclick="toggleAdminMenu()"><i class="fa-solid fa-xmark"></i></button>
+                </div>
                 <ul id="admin-menu">
                     <li class="active" onclick="switchAdminPage('admin-pengaturan', this)"><i class="fa-solid fa-gear"></i> Pengaturan Umum</li>
                     <li onclick="switchAdminPage('admin-kontak', this)"><i class="fa-solid fa-address-book"></i> Kontak & Sosmed</li>
@@ -113,6 +118,9 @@
             </aside>
 
             <div class="admin-content">
+                <button class="btn-hamburger" onclick="toggleAdminMenu()">
+                    <i class="fa-solid fa-bars"></i> Menu Admin
+                </button>
 
                 <div id="admin-pengaturan" class="admin-page active">
                     
