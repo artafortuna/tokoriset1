@@ -190,6 +190,17 @@ function toggleView() {
     }
 }
 
+// --- FUNGSI BUKA/TUTUP MENU ADMIN (HAMBURGER) ---
+function toggleAdminMenu() {
+    const sidebar = document.getElementById('admin-sidebar');
+    const overlay = document.getElementById('admin-overlay');
+    if (sidebar && overlay) {
+        sidebar.classList.toggle('show');
+        overlay.classList.toggle('show');
+    }
+}
+
+// --- FUNGSI GANTI HALAMAN ADMIN ---
 function switchAdminPage(pageId, element) {
     const pages = document.querySelectorAll('.admin-page');
     pages.forEach(page => page.classList.remove('active'));
@@ -199,6 +210,12 @@ function switchAdminPage(pageId, element) {
         const menuItems = document.querySelectorAll('#admin-menu li');
         menuItems.forEach(item => item.classList.remove('active'));
         element.classList.add('active');
+    }
+
+    // Otomatis menutup menu sidebar setelah pilihan diklik
+    const sidebar = document.getElementById('admin-sidebar');
+    if (sidebar && sidebar.classList.contains('show')) {
+        toggleAdminMenu();
     }
 }
 
