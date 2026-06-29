@@ -56,12 +56,12 @@
             <p class="subtitle">Pilih kategori, produk, dan metode pembayaran di bawah ini.</p>
 
             <div class="contact-section" style="padding: 14px 16px; margin-bottom: 16px; border-radius: 12px;">
-    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-        <div style="flex: 1 1 260px;">
-            <input id="customer-search" type="text" placeholder="Contoh: Telkomsel, 10.000, MLBB, pulsa" oninput="handleSearch()" />
-        </div>
-    </div>
-</div>
+                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                    <div style="flex: 1 1 260px;">
+                        <input id="customer-search" type="text" placeholder="Contoh: Telkomsel, 10.000, MLBB, pulsa" oninput="handleSearch()" />
+                    </div>
+                </div>
+            </div>
 
             <div class="category-tabs" id="category-tabs"></div>
             <div class="tabs" id="operator-tabs"></div>
@@ -71,9 +71,9 @@
                 
                 <h3 style="margin-bottom: 10px; font-size: 1.1rem;">Data Tujuan</h3>
                 <div class="destination-input-group">
-    <input type="text" id="customer-id-input" class="destination-input id-field" placeholder="No. HP / ID Game / Link Tujuan">
-    <input type="text" id="customer-server-input" class="destination-input server-field" placeholder="ID Server">
-</div>
+                    <input type="text" id="customer-id-input" class="destination-input id-field" placeholder="No. HP / ID Game / Link Tujuan">
+                    <input type="text" id="customer-server-input" class="destination-input server-field" placeholder="ID Server">
+                </div>
 
                 <h3 style="margin-top: 25px; margin-bottom: 15px; font-size: 1.15rem;">Pilih Metode Pembayaran</h3>
                 <div id="payment-methods-grid" class="payment-grid"></div>
@@ -82,7 +82,9 @@
                     <i class="fa-brands fa-whatsapp"></i> BELI SEKARANG
                 </button>
             </div>
-            </div> <div class="content-wrapper">
+        </div> 
+
+        <div class="content-wrapper">
             
             <div id="customer-features-wrap" style="display:none;">
                 <div class="features-section" id="features-container"></div>
@@ -134,14 +136,20 @@
 
                     <div class="admin-card">
                         <h3>Pengaturan Umum, Banner & Flash Sale</h3>
-                        <label>Nomor WhatsApp Pembelian (Utama)</label>
-                        <input type="text" id="admin-wa" placeholder="Contoh: 6281234567890">
-
-                        <label>Teks Berjalan (Marquee)</label>
-                        <input type="text" id="admin-marquee">
-
-                        <label>Batas Waktu Flash Sale (Kosongkan jika tidak ada)</label>
-                        <input type="datetime-local" id="admin-flash-end">
+                        
+                        <div class="grid-inputs">
+                            <div>
+                                <label>WhatsApp Utama</label>
+                                <input type="text" id="admin-wa" placeholder="Contoh: 6281234567890">
+                            </div>
+                            <div>
+                                <label>Batas Waktu Flash Sale</label>
+                                <input type="datetime-local" id="admin-flash-end">
+                            </div>
+                        </div>
+                        
+                        <label>Teks Promo Berjalan (Marquee)</label>
+                        <input type="text" id="admin-marquee" placeholder="Masukkan teks promo yang akan berjalan...">
 
                         <div class="banner-inputs" style="margin-top:14px;">
                             <div class="help-text">Rasio banner yang presisi: <strong>16:5</strong></div>
@@ -260,9 +268,9 @@
                         <label>Harga Jual (Rp)</label>
                         <input type="number" id="prod-price" placeholder="Contoh: 12500">
 
-                        <div class="checkbox-group" style="display: flex; gap: 15px; margin-top: 15px;">
-                            <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" id="prod-trending"> 🔥 Masukkan ke Trending</label>
-                            <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" id="prod-flash"> ⚡ Masukkan ke Flash Sale</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="prod-trending"> 🔥 Masukkan ke Trending</label>
+                            <label><input type="checkbox" id="prod-flash"> ⚡ Masukkan ke Flash Sale</label>
                         </div>
 
                         <div class="form-buttons">
@@ -275,20 +283,17 @@
 
                 <div id="admin-daftar-produk" class="admin-page">
                     <div class="admin-card" style="margin-bottom: 0;">
+                        
                         <div class="admin-header-flex">
-                            <h3>Daftar Produk Terinput</h3>
-                            <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+                            <h3 style="margin: 0;">Daftar Produk</h3>
+                            <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
                                 <div class="filter-group">
-                                    <label style="margin:0 6px 0 0; font-weight:700;">Filter Kategori:</label>
-                                    <select id="admin-filter-category" onchange="renderAdminList()">
-                                        <option value="Semua">Semua Kategori</option>
-                                    </select>
+                                    <label for="admin-filter-category">Filter:</label>
+                                    <select id="admin-filter-category" onchange="renderAdminList()" style="width: auto; min-width: 140px;"></select>
                                 </div>
                                 <div class="filter-group">
-                                    <div>
-                                        <label style="margin:0 0 6px;">Cari:</label>
-                                        <input id="admin-search" type="text" placeholder="Cari kategori/operator/nominal..." oninput="renderAdminList()" />
-                                    </div>
+                                    <label for="admin-search">Cari:</label>
+                                    <input type="text" id="admin-search" placeholder="Ketik nama produk..." oninput="renderAdminList()" style="width: auto; min-width: 180px;">
                                 </div>
                             </div>
                         </div>
