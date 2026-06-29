@@ -141,7 +141,31 @@ body.dark-mode .product-card.selected {
 .btn-info { position: absolute; top: -8px; right: -5px; width: 22px; height: 22px; font-size: 0.8rem; font-weight: 900; background: linear-gradient(135deg, #0ea5e9, #0369a1); color: white; border: none; cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: 0.2s; z-index: 10; }
 .btn-info:hover { transform: scale(1.15); box-shadow: 0 4px 8px rgba(0,0,0,0.3); filter: brightness(1.1); }
 
-.product-nominal { font-size: 0.9rem; font-weight: 800; margin-bottom: 4px; color: var(--text); pointer-events: none;}
+/* --- PERBAIKAN RATA TENGAH NAMA PRODUK --- */
+.product-text-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.product-nominal { 
+    font-size: 0.9rem; 
+    font-weight: 800; 
+    margin-bottom: 4px; 
+    color: var(--text); 
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 38px; /* Menjaga tinggi agar tetap rata meski beda panjang teks */
+    line-height: 1.2;
+    word-wrap: break-word;
+    width: 100%;
+}
 .product-desc { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 8px; line-height: 1.3; background: var(--bg); padding: 4px 8px; border-radius: 6px; display: inline-block; pointer-events: none;}
 
 /* --- PEMISAH NAMA & HARGA PRODUK (SOLID) --- */
